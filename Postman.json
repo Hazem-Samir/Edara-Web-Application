@@ -1,0 +1,658 @@
+{
+	"info": {
+		"_postman_id": "1cefceb2-9895-4407-b562-90cc8dba7bd2",
+		"name": "Edara",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27147909"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Get Products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/Products/16",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"Products",
+										"16"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "Name",
+											"value": "product5",
+											"type": "text"
+										},
+										{
+											"key": "Description",
+											"value": "2312121",
+											"type": "text"
+										},
+										{
+											"key": "Photo",
+											"type": "file",
+											"src": "/C:/Users/hazem/Pictures/Screenshots/Screenshot (1).png"
+										},
+										{
+											"key": "Stock",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "WID",
+											"value": "16",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:4000/Products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"Products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Product",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "Name",
+											"value": "product6",
+											"type": "text"
+										},
+										{
+											"key": "Description",
+											"value": "2312121",
+											"type": "text"
+										},
+										{
+											"key": "Photo",
+											"type": "file",
+											"src": "/C:/Users/hazem/Pictures/Screenshots/Screenshot (62).png"
+										},
+										{
+											"key": "Stock",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "WID",
+											"value": "16",
+											"type": "text"
+										},
+										{
+											"key": "PID",
+											"value": "46",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:4000/Products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"Products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete All Products",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/Products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"Products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Product",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/Products/46",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"Products",
+										"46"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Requests History",
+					"item": [
+						{
+							"name": "Get Requests History",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/requests-history/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"requests-history",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Supervisors Management",
+					"item": [
+						{
+							"name": "Get Supervisors",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/supervisors/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"supervisors",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Supervisor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n        \"Name\": \"hazsemsam2\",\r\n        \"Email\": \"hazem123@gmail.com\",\r\n        \"Password\": \"0109889845742\",\r\n        \"Phone\": \"0109889845742\"\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:4000/supervisors/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"supervisors",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Supervisor",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n        \"Name\": \"hazsemsam1\",\r\n        \"Email\": \"hazem12@gmail.com\",\r\n        \"Password\": \"12345679\",\r\n        \"Phone\": \"0109889845742\",\r\n        \"PID\": \"33\"\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:4000/supervisors/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"supervisors",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Supervisor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/supervisors/39",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"supervisors",
+										"39"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Warehouses Management",
+					"item": [
+						{
+							"name": "Delete All Warehouses",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/warehouses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"warehouses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Warehouse",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n        \"warehouseName\": \"Name\",\r\n        \"Location\": \"Location\",\r\n        \"SID\": \"33\" \r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:4000/warehouses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"warehouses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Warehouse",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n        \"WID\": \"18\",\r\n        \"Name\": \"warehouse1\",\r\n        \"Location\": \"Giza\",\r\n        \"SID\": \"33\"\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:4000/warehouses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"warehouses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Warehouse",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/warehouses/18",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"warehouses",
+										"18"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Warehouses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/warehouses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"warehouses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Supervisors Requests",
+					"item": [
+						{
+							"name": "Get Requests",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/requests",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Accept Request",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n        \"RID\": \"19\"\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:4000/requests/accept",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"requests",
+										"accept"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Decline Request",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n        \"RID\": \"19\"\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:4000/requests/decline",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"requests",
+										"decline"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Supervisor",
+			"item": [
+				{
+					"name": "My Requests History",
+					"item": [
+						{
+							"name": "Get My Requests History",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/my-requests-history/88ac5bffb3e9687f7a665725fcec5bb6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"my-requests-history",
+										"88ac5bffb3e9687f7a665725fcec5bb6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "My Products",
+					"item": [
+						{
+							"name": "Get My Products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/my-products/88ac5bffb3e9687f7a665725fcec5bb6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"my-products",
+										"88ac5bffb3e9687f7a665725fcec5bb6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Request Product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"SID\":\"38\",\r\n        \"WID\":\"16\",\r\n        \"PID\":\"47\",\r\n        \"Quantity\":\"80\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/my-products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"my-products",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n         \"Email\": \"hazem@gmail.com\",\r\n        \"Password\": \"01099845742\"\r\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:4000/Authentication",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"Authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"params\": {\r\n                \"Token\": \"88ac5bffb3e9687f7a665725fcec5bb6\"\r\n            }}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/Authentication",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"Authentication"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

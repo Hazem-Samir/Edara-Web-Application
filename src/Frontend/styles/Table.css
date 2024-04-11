@@ -1,0 +1,146 @@
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+section .page-name {
+   
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section table {
+    font-weight: bold;
+   margin-left: auto;
+   margin-right: auto;
+    border-radius: 10px;
+    /* border: 1px solid black; */
+box-shadow: 0px 3px 7px 9px #ddd;
+   padding: 5px;
+
+    height: 200px;
+    color: #2b2b2b;   
+}
+
+@media (min-width:576px) {
+    section table {
+        width: 550px;
+    }
+}
+@media (min-width:768px) {
+    section table {
+        width: 700px;
+    }
+}
+@media (min-width:992px) {
+    section table {
+        width: 900px;
+    }
+}
+@media (min-width:1200px) {
+    section table{
+        width: 1100px;
+    }
+    section table tr td:last-child {
+        width: 350px;
+    }
+}
+
+section table td,section table th    {
+    padding: 5px 5px;
+    border: 2px solid #FFFFFF;
+    border-radius: 5px;
+   
+}
+
+section table thead th {
+    background-color: #d5d8dd;
+    height: 32px;
+    border: 3px solid #FFFFFF;
+    
+}
+
+section table tbody td {
+    background-color: #e0e4ee;
+    padding-left: 5px;
+}
+
+section table tbody td:last-child  {
+    color: green;
+}
+
+@media (max-width: 600px) {
+    section table {
+       display: none;
+       /* react print message */
+    }
+}
+
+.buttons {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    
+   
+}
+
+ .button,.Productbutton {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #648bc5;
+    border-radius: 8px;
+    border: 0px solid #333;
+    cursor: pointer;
+    padding: 8px;
+    box-shadow: 0px 6px 8px -2px #5c5d5e;
+    color: white;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+    font-size: small;
+}
+.add {
+display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+ .add .button{
+   text-align: center;
+ width: 100px;
+        background-color: #5384ce;
+        border-radius: 10px;
+        border: 0px solid #333;
+        cursor: pointer;
+        padding: 8px;
+        box-shadow: 0px 6px 8px -2px #5c5d5e;
+        color: white;
+        margin: 15px;  
+    
+}
+
+.button,.add,.Productbutton {
+    transition: 0.3s;
+}
+.button:hover,.Productbutton:hover {
+    
+    letter-spacing: 1px;
+width: 120px;
+}
+.add .button:hover{
+    width: 105px;
+}
+
+
+
+
+
+ table img {
+    width: 100px;
+    height: 100px;
+   padding: 10px;
+   margin-left: auto;
+ }
