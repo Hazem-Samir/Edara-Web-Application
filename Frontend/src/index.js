@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './Frontend/styles/Table.css';
-import './Frontend/styles/Form.css';
-import './Frontend/styles/Login.css';
-import './Frontend/styles/Header.css';
-import reportWebVitals from './Frontend/reportWebVitals';
+import './styles/Table.css';
+import './styles/Form.css';
+import './styles/Login.css';
+import './styles/Header.css';
+import reportWebVitals from './reportWebVitals';
 
 import { RouterProvider } from "react-router-dom";
-import { routes } from "./Frontend/routes";
+import { routes } from "./routes";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={routes} />);
 
