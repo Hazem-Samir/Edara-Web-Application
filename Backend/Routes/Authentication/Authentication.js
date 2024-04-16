@@ -23,7 +23,6 @@ router.post("/",
             
             const query = util.promisify(conn.query).bind(conn);
             const user = await query("select * from user where Email ='" + req.body.Email + "'");
-            consolr.log(user)
             if (user.length == 0) {
                 res.status(404).json("Email or Passowrd Not Found");
             }

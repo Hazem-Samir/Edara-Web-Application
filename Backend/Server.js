@@ -5,10 +5,12 @@ const server = express();
 const PORT = 4000;
 
 // ====================== Global Middleware ======================
-const corsOptions = { 
-    origin: '*',
-    credentials: true,
-};
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+
 
 server.use(cors(corsOptions));
 server.use(express.json());
