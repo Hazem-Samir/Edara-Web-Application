@@ -1,65 +1,77 @@
-version: "3"
+version: "3.2"
 
 volumes:
   Backend_node_modules:
+    driver: local
   Frontend_node_modules:
+    driver: local
+  mysqldata:
+    driver: local
 
 networks:
   mysql-phpmyadmin:
     name: mysql-phpmyadmin
-    # use the bridge driver
     driver: bridge
 
 services:
-  DB:
-    image: mysql
-    container_name: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD: root
-      - MYSQL_DATABASE: DB
-      - MYSQL_USER: admin
-      - MYSQL_PASSWORD: admin
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysqldata:/var/lib/mysql
-    networks:
-      mysql-phpmyadmin:
-        aliases:
-          - mysql
-  phpmyadmin:
-    image: phpmyadmin:5.2.0
-    container_name: phpmyadmin
-    links:
-      - DB
-    environment:
-      - PMA_HOST: DB
-      - PMA_PORT: 3306
-    ports:
-      - 8081:80
-    networks:
-      mysql-phpmyadmin:
-        aliases:
-          - phpmyadmin
-    depends_on:
-      - DB
-  Edara_Backend:
-    build: ./Backend
-    container_name: Edara_Backend
+  backend:
+    build: ./Backend/
+    container_name: backend
     ports:
       - "4000:4000"
     volumes:
       - ./Backend:/app
       - Backend_node_modules:/app/node_modules
     depends_on:
-      - phpmyadmin
-  Edara_Frontend:
-    build: ./Frontend
-    container_name: Edara_Frontend
+      - db
+    restart: always
+    networks:
+      - mysql-phpmyadmin
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: admin
+      MYSQL_PASS: 'admin'
+      MYSQL_DB: edara
+      MYSQL_PORT: 3306
+  db:
+    image: mysql
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: edara
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - mysql-phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
+    networks:
+      - mysql-phpmyadmin
     depends_on:
-      - Edara_Backend
+      - db
+    volumes:
+      - /sessions
+  frontend:
+    build: ./Frontend/
+    container_name: frontend
+    depends_on:
+      - backend
     ports:
       - "3000:3000"
     volumes:
       - ./Frontend:/app
       - Frontend_node_modules:/app/node_modules
+    networks:
+      - mysql-phpmyadmin
