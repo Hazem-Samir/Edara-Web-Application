@@ -24,7 +24,7 @@ services:
       - Backend_node_modules:/app/node_modules
     depends_on:
       - db
-    restart: always
+    restart: on-failure
     networks:
       - mysql-phpmyadmin
     environment:

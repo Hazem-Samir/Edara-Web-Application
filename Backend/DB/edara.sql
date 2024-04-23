@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 08, 2023 at 10:49 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Host: db:3306
+-- Generation Time: Apr 23, 2024 at 12:56 PM
+-- Server version: 8.3.0
+-- PHP Version: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `products` (
-  `ID` int(11) NOT NULL,
-  `Name` varchar(30) NOT NULL,
-  `Description` varchar(100) NOT NULL,
-  `Photo` varchar(200) NOT NULL,
-  `Stock` int(11) NOT NULL,
-  `WID` int(11) NOT NULL
+  `ID` int NOT NULL,
+  `Name` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `Photo` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `Stock` int NOT NULL,
+  `WID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -50,12 +50,12 @@ INSERT INTO `products` (`ID`, `Name`, `Description`, `Photo`, `Stock`, `WID`) VA
 --
 
 CREATE TABLE `requests` (
-  `ID` int(11) NOT NULL,
-  `SID` int(11) NOT NULL,
-  `WID` int(11) NOT NULL,
-  `PID` int(11) NOT NULL,
-  `Quantity` int(11) NOT NULL,
-  `State` varchar(10) NOT NULL DEFAULT 'Pending'
+  `ID` int NOT NULL,
+  `SID` int NOT NULL,
+  `WID` int NOT NULL,
+  `PID` int NOT NULL,
+  `Quantity` int NOT NULL,
+  `State` varchar(10) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -74,14 +74,14 @@ INSERT INTO `requests` (`ID`, `SID`, `WID`, `PID`, `Quantity`, `State`) VALUES
 --
 
 CREATE TABLE `user` (
-  `ID` int(11) NOT NULL,
-  `Name` varchar(30) NOT NULL,
-  `Email` varchar(30) NOT NULL,
-  `Password` varchar(255) NOT NULL,
-  `Token` varchar(255) NOT NULL,
-  `Type` varchar(10) NOT NULL,
-  `Phone` int(18) NOT NULL,
-  `Status` tinyint(1) NOT NULL DEFAULT 1
+  `ID` int NOT NULL,
+  `Name` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `Email` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Token` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Type` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `Phone` int NOT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -89,12 +89,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`ID`, `Name`, `Email`, `Password`, `Token`, `Type`, `Phone`, `Status`) VALUES
-(2, 'sdsssss', 'd@gmail.com', '$2b$10$QmkOMhWdagjnI', '08741506796cb268a9d7c97323f554bd', '', 445665, 1),
-(26, 'hazem', 'hazem@gmail.com', '$2b$10$YUbJYszzFeQWiVFuHvs3oOmSpgzGFFnWROOIHC3VGsabCSq3HTBiO', '67cfd514a39588d9a389696ddc8b7548', 'Admin', 231231, 0),
-(33, 'hazsemsam1', 'hazem12@gmail.com', '$2b$10$p2kMGMsThwTjIHo5J2bWKe.MkzoD.EKO6HPW7T5hFKOPQcr5odUO6', 'fbb39377f5ead13f985b7d2bba71e55f', 'Supervisor', 2147483647, 1),
-(34, 'ddss', 'dd@gmail.com', '$2b$10$cjGUWp3cbEZtD4pcB2n2a.kkY6az8/h20lrOXSTrz1bJcEqECPAIm', 'a5089fea90ffd46a2af84b1f974675cb', 'Supervisor', 5555, 0),
-(37, 'seif', 'seif@gmail.com', '$2b$10$TGwda0fuQ/gamic67oixEe0IbfMsmbjvfQBKO7ZoXgPKpS8wcZbby', 'dcc98e408314f3f0e675cc58a7c5858f', 'Supervisor', 8888888, 1),
-(38, 'salma yasser', 'salma@gmail.com', '$2b$10$dptwGOushP2XOLi46Gisy.LZLcd44pQJ3fe7oCnLgO/xuLiWoZeFW', '88ac5bffb3e9687f7a665725fcec5bb6', 'Supervisor', 123456789, 0);
+(2, 'sdsssss', 'd@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', '08741506796cb268a9d7c97323f554bd', '', 445665, 1),
+(26, 'hazem', 'hazem@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', '67cfd514a39588d9a389696ddc8b7548', 'Admin', 231231, 1),
+(33, 'hazsemsam1', 'hazem12@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', 'fbb39377f5ead13f985b7d2bba71e55f', 'Supervisor', 2147483647, 1),
+(34, 'dds', 'dd@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', 'a5089fea90ffd46a2af84b1f974675cb', 'Supervisor', 222222, 0),
+(37, 'seif', 'seif@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', 'dcc98e408314f3f0e675cc58a7c5858f', 'Supervisor', 8888888, 1),
+(38, 'salma yasser', 'salma@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', '88ac5bffb3e9687f7a665725fcec5bb6', 'Supervisor', 123456789, 0),
+(40, 'seif tariq', 'seif1@gmail.com', '$2b$10$1QEact7.A4sGveG4/cPwSeaaWOLFrbX0tldsKul1t.uVweI6kpd7O', 'eaf60f7690aba04066ca86047f0c91df', 'Supervisor', 122222, 1);
 
 -- --------------------------------------------------------
 
@@ -103,11 +104,11 @@ INSERT INTO `user` (`ID`, `Name`, `Email`, `Password`, `Token`, `Type`, `Phone`,
 --
 
 CREATE TABLE `warehouses` (
-  `ID` int(11) NOT NULL,
-  `Name` varchar(30) NOT NULL,
-  `Location` varchar(50) NOT NULL,
+  `ID` int NOT NULL,
+  `Name` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `Status` tinyint(1) NOT NULL,
-  `SID` int(11) NOT NULL
+  `SID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -115,7 +116,8 @@ CREATE TABLE `warehouses` (
 --
 
 INSERT INTO `warehouses` (`ID`, `Name`, `Location`, `Status`, `SID`) VALUES
-(16, 'aaaaa', 'aaaaaaa', 1, 38);
+(16, 'aaaaa', 'aaaaaaa', 1, 38),
+(19, 'bbbb', 'bbbb', 0, 40);
 
 --
 -- Indexes for dumped tables
@@ -158,25 +160,25 @@ ALTER TABLE `warehouses`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `warehouses`
 --
 ALTER TABLE `warehouses`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
