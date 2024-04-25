@@ -27,7 +27,8 @@ const ProductRequest = require('./Routes/Supervisor/My Products');
 const products = require('./Routes/Admin/Products');
 const requests = require('./Routes/Admin/Requests');
 const Authentication = require('./Routes/Authentication/Authentication')
-
+const cookieParser = require('cookie-parser');
+server.use(cookieParser());
 // ====================== Routes ======================
 server.use("/Authentication", Authentication);
 server.use("/supervisors", supervisors);

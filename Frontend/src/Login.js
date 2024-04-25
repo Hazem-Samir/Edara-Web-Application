@@ -18,9 +18,10 @@ const Login = () => {
 	function check() {
 		axios.post('http://localhost:4000/Authentication', { Email: email, Password: password })
 			.then(res => {
-				setCookie('Token', res.data.Token, { path: '/' });
-				setCookie('Name', res.data.Name, { path: '/' });
-				if (res.data.Type === 'Admin')
+				console.log(res);
+				setCookie('Token', res.data.token, { path: '/' });
+				setCookie('Name', res.data.name, { path: '/' });
+				if (res.data.type === 'Admin')
 					navigate("/A/Home");
 				else navigate("/S/Home");
 			}).catch(error => {

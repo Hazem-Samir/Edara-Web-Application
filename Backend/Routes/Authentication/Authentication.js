@@ -6,6 +6,7 @@ const { body, validationResult, } = require('express-validator');
 const util = require("util");
 const bcrypt = require("bcrypt");
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 
 router.use(cookieParser());
@@ -30,9 +31,11 @@ router.post("/",
             if(checkPassword){
                 delete user[0].Password;
                 // res.cookie('Token2', `${user[0].Token}`);
-            
+
+                // Generate a JWT token
+                const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, 'secretKey', { expiresIn: '1h' });
                 await query("UPDATE `user` SET `Status` = '1' WHERE Token = '" + user[0].Token +"';");
-                res.status(200).json(user[0]);
+                res.status(200).json({token:token , type:user[0].Type , name: user[0].Name});
             }
 
             else {
@@ -43,8 +46,6 @@ router.post("/",
 
 
         catch (err) {
-           
-           
             // res.status(500).json("Error");
         }
 

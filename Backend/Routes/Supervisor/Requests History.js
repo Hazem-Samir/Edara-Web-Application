@@ -1,12 +1,12 @@
 // ====================== Initialization ======================
 const express = require('express');
 const router = express.Router();
-const conn = require('../../DB/Connection')
-const isSupervisor = require("../Middleware/Supervisor")
+const conn = require('../../DB/Connection');
+const { supervisorAuthorize } = require('../Middleware/authorize');
 
 // ====================== Requests ======================
-router.get("/:Token",isSupervisor, (req, res) => {
-    const query1 = "SELECT ID FROM `user` WHERE Token = '"+ req.params.Token +"';"
+router.get("/:Token",supervisorAuthorize, (req, res) => {
+    const query1 = "SELECT ID FROM `user` WHERE Token = '"+ req.user.token +"';"
     conn.query(query1,
         (err, result) => {
             if (err) console.log(res.json("Erorr"));          
@@ -16,7 +16,6 @@ router.get("/:Token",isSupervisor, (req, res) => {
                     if (err) return (res.json("Erorr"));
                     return res.json(result);
                 })
-           
         }); 
  
 })
