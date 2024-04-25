@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const conn = require('../../DB/Connection');
-const { adminAuthorize } = require('../Middleware/authorize');
+const { adminAuthorize} = require('../Middleware/authorize');
 
 
 // ====================== Requests ======================

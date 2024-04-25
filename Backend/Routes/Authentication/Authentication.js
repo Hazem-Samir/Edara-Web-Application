@@ -11,11 +11,14 @@ const jwt = require('jsonwebtoken');
 
 router.use(cookieParser());
 
+
 // ====================== Requests ======================
 router.post("/",
     body("Email").isEmail().withMessage("Please Enter Valid Email"),
     body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
     async (req, res) => {
+        // console.log(req.session.id);
+        
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -33,8 +36,11 @@ router.post("/",
                 // res.cookie('Token2', `${user[0].Token}`);
 
                 // Generate a JWT token
-                const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, 'secretKey', { expiresIn: '1h' });
-                await query("UPDATE `user` SET `Status` = '1' WHERE Token = '" + user[0].Token +"';");
+                const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, 'Network Security', { expiresIn: '1h' });
+                await query("UPDATE `user` SET `Status` = '1' WHERE Token = '" + user[0].Token + "';");
+                req.session.visited = true;
+                req.session.user = token;
+                console.log(req.session.id);
                 res.status(200).json({token:token , type:user[0].Type , name: user[0].Name});
             }
 
@@ -60,6 +66,7 @@ router.put("/", (req, res) => {
             return (res.json(error));
         }
         else {
+            req.session.destroy();
             res.statusCode = 200;
             return (res.json("Logout"));
 

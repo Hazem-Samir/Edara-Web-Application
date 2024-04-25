@@ -14,6 +14,7 @@ function AdminNavBar() {
             .then(res => {
                 Cookies.remove('Name');
                 Cookies.remove('Token');
+                Cookies.remove('connect.sid');
                 navigate("/");
             })
             .catch(err => console.log("msh sh8ala", err))

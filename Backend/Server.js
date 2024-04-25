@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const server = express();
 const PORT = 4000;
+const session = require('express-session');
 
 // ====================== Global Middleware ======================
 const corsOptions ={
@@ -10,7 +11,12 @@ const corsOptions ={
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
-
+server.use(session({
+    secret: 'Network Security',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {maxAge: 60000*60}
+}));
 //
 server.use(cors(corsOptions));
 server.use(express.json());

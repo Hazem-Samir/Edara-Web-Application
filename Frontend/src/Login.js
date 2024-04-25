@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import './styles/Login.css'
 import { incorrect } from "./JS/main";
 import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
+
 const Login = () => {
 	const navigate = useNavigate();
 
@@ -14,19 +16,25 @@ const Login = () => {
 	const Login = (event) => {
 		event.preventDefault();
 	};
-
+	function getCookie(name) {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	}
+	
+	
+	
 	function check() {
 		axios.post('http://localhost:4000/Authentication', { Email: email, Password: password })
 			.then(res => {
-				console.log(res);
-				setCookie('Token', res.data.token, { path: '/' });
-				setCookie('Name', res.data.name, { path: '/' });
-				if (res.data.type === 'Admin')
-					navigate("/A/Home");
-				else navigate("/S/Home");
-			}).catch(error => {
-				incorrect("Email or Password Is Incorrect");
-			})
+			// setCookie('Token', res.data.token, { path: '/' });
+			setCookie('Name', res.data.name, { path: '/' });
+			if (res.data.type === 'Admin')
+			navigate("/A/Home");
+			else navigate("/S/Home");
+		}).catch(error => {
+			incorrect("Email or Password Is Incorrect");
+		})
 	}
 
 	return (
