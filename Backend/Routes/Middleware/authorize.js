@@ -8,8 +8,9 @@ const jwt = require('jsonwebtoken');
 
 exports.adminAuthorize = async (req, res, next) => {
     const query = util.promisify(conn.query).bind(conn);
-    const Token = req.cookies.Token;
-    const networksec = jwt.verify(Token, 'secretKey', (err, decoded) => {
+    const Token = req.session.user;
+    // console.log(req.session);
+    req.user = jwt.verify(Token, 'Network Security', (err, decoded) => {
         if (err) {
             // Handle invalid token
             console.log(err);
@@ -17,7 +18,7 @@ exports.adminAuthorize = async (req, res, next) => {
             return decoded;
         }
     });
-    const user = await query("select * from user where Token = '" + networksec.token + "'");
+    const user = await query("select * from user where Token = '" + req.user.token + "'");
     if (user[0] && user[0].Type === "Admin") {
         next();
     }
@@ -28,8 +29,8 @@ exports.adminAuthorize = async (req, res, next) => {
 
 exports.supervisorAuthorize = async (req, res, next) => {
     const query = util.promisify(conn.query).bind(conn);
-    const Token = req.cookies.Token;
-    req.user = jwt.verify(Token, 'secretKey', (err, decoded) => {
+    const Token = req.session.user;
+    req.user = jwt.verify(Token, 'Network Security', (err, decoded) => {
         if (err) {
             // Handle invalid token
             console.log(err);

@@ -5,7 +5,8 @@ const conn = require('../../DB/Connection');
 const { supervisorAuthorize } = require('../Middleware/authorize');
 
 // ====================== Requests ======================
-router.get("/:Token",supervisorAuthorize, (req, res) => {
+router.get("/:Token", supervisorAuthorize, (req, res) => {
+    console.log(req.session.id);
     const query1 = "SELECT ID FROM `user` WHERE Token = '"+ req.user.token +"';"
     conn.query(query1,
         (err, result) => {
@@ -17,7 +18,7 @@ router.get("/:Token",supervisorAuthorize, (req, res) => {
                     return res.json(result);
                 })
         }); 
- 
+
 })
 
 // ====================== Export ======================
