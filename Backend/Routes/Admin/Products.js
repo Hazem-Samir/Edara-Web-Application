@@ -3,13 +3,13 @@ const express = require('express');
 const router = express.Router();
 const conn = require('../../DB/Connection')
 const upload = require("../Middleware/Upload")
-const isAdmin = require("../Middleware/Admin")
 const { body, validationResult, param } = require("express-validator");
 const util = require("util"); // helper
 const fs = require("fs"); // file system
+const { adminAuthorize } = require('../Middleware/authorize');
 
 // ====================== Requests ======================
-router.get("/:wid", isAdmin, (req, res) => {
+router.get("/:wid", adminAuthorize, (req, res) => {
     const query = "SELECT products.ID,products.Name AS PName,products.Description,products.Photo,products.Stock,warehouses.Name,warehouses.Status FROM products JOIN warehouses ON products.WID = warehouses.ID WHERE warehouses.ID = " + req.params.wid + ";";
     conn.query(query, (err, data) => {
         if (err) return (res.json("Erorr"));
@@ -19,7 +19,7 @@ router.get("/:wid", isAdmin, (req, res) => {
 
 
 
-router.delete("/", isAdmin, (req, res) => {
+router.delete("/", adminAuthorize, (req, res) => {
     const query = "DELETE FROM `products`;";
     const con = conn.query(query, (error, data) => {
         if (error) {
@@ -34,7 +34,7 @@ router.delete("/", isAdmin, (req, res) => {
     });
 })
 
-router.delete("/:PID", isAdmin, (req, res) => {
+router.delete("/:PID", adminAuthorize, (req, res) => {
     const query = "DELETE FROM `products` WHERE `ID` = " + req.params.PID + ";";
     conn.query(query, (error, data) => {
         if (error) {
@@ -49,7 +49,7 @@ router.delete("/:PID", isAdmin, (req, res) => {
     });
 })
 
-router.put("/", isAdmin,
+router.put("/", adminAuthorize,
     upload.single("Photo"),
     body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Description").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 300 }).withMessage("Description sholud be bewteen 4 to 300 charcters"),
@@ -99,7 +99,7 @@ router.put("/", isAdmin,
 
 
 
-router.post("/", isAdmin,
+router.post("/", adminAuthorize,
     upload.single("Photo"),
     body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Description").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 300 }).withMessage("Description sholud be bewteen 4 to 300 charcters"),

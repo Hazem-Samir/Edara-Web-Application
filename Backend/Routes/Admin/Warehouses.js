@@ -4,9 +4,9 @@ const router = express.Router();
 const conn = require('../../DB/Connection')
 const { body, validationResult, param } = require('express-validator');
 const util = require("util");
-const isAdmin = require("../Middleware/Admin")
+const { adminAuthorize } = require('../Middleware/authorize');
 // ====================== Requests ======================
-router.get("/", isAdmin, (req, res) => {
+router.get("/", adminAuthorize, (req, res) => {
     const query = "SELECT warehouses.ID,warehouses.Name AS WHName,warehouses.Location,warehouses.Status,warehouses.SID,user.Name FROM warehouses JOIN user ON warehouses.SID = user.ID;";
     conn.query(query, (err, data) => {
         if (err) return (res.json("Erorr"));
@@ -14,7 +14,7 @@ router.get("/", isAdmin, (req, res) => {
     });
 })
 
-router.get("/:WID", isAdmin, (req, res) => {
+router.get("/:WID", adminAuthorize, (req, res) => {
     const query = "SELECT warehouses.ID,warehouses.Name AS WHName,warehouses.Location,warehouses.Status,warehouses.SID,user.Name FROM warehouses JOIN user ON warehouses.SID = user.ID WHERE warehouses.ID = " + req.params.WID + ";";
     conn.query(query, (err, data) => {
         if (err) return (res.json("Erorr"));
@@ -22,7 +22,7 @@ router.get("/:WID", isAdmin, (req, res) => {
     });
 })
 
-router.delete("/", isAdmin, (req, res) => {
+router.delete("/", adminAuthorize, (req, res) => {
     const query = "DELETE FROM `warehouses`;";
     const con = conn.query(query, (error, data) => {
         if (error) {
@@ -36,7 +36,7 @@ router.delete("/", isAdmin, (req, res) => {
     });
 })
 
-router.delete("/:WID", isAdmin, (req, res) => {
+router.delete("/:WID", adminAuthorize, (req, res) => {
     const query = "DELETE FROM `warehouses` WHERE `ID` = " + req.params.WID + ";";
     const con = conn.query(query, (error, data) => {
         if (error) {
@@ -50,7 +50,7 @@ router.delete("/:WID", isAdmin, (req, res) => {
     });
 })
 
-router.put("/", isAdmin, body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
+router.put("/", adminAuthorize, body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Location").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     (req, res) => {
         const errors = validationResult(req);
@@ -72,7 +72,7 @@ router.put("/", isAdmin, body("Name").isString().withMessage("Please Enter Valid
     })
 
 
-router.post("/", isAdmin,
+router.post("/", adminAuthorize,
     body("warehouseName").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Location").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
 

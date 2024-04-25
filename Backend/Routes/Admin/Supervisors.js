@@ -4,12 +4,12 @@ const router = express.Router();
 const conn = require('../../DB/Connection');
 const { body, validationResult, param } = require('express-validator');
 const util = require("util");
-const isAdmin = require("../Middleware/Admin")
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const { adminAuthorize } = require('../Middleware/authorize');
 
 // ====================== Requests ======================
-router.get("/", isAdmin, (req, res) => {
+router.get("/", adminAuthorize, (req, res) => {
     const query = "SELECT * FROM `user` WHERE `Type` = 'Supervisor';";
     conn.query(query, (err, data) => {
         if (err) return (res.json("Erorr"));
@@ -17,7 +17,7 @@ router.get("/", isAdmin, (req, res) => {
     });
 })
 
-router.post("/", isAdmin,
+router.post("/", adminAuthorize,
     body("Email").isEmail().withMessage("Please Enter Valid Email"),
     body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
@@ -60,7 +60,7 @@ router.post("/", isAdmin,
 
     })
 
-router.delete("/:ID", isAdmin, (req, res) => {
+router.delete("/:ID", adminAuthorize, (req, res) => {
     const query = "DELETE FROM `user` WHERE `ID` = " + req.params.ID + ";";
     const con = conn.query(query, (error, data) => {
         if (error) {
@@ -74,7 +74,7 @@ router.delete("/:ID", isAdmin, (req, res) => {
     });
 })
 
-router.put("/", isAdmin, body("Email").isEmail().withMessage("Please Enter Valid Email"),
+router.put("/", adminAuthorize, body("Email").isEmail().withMessage("Please Enter Valid Email"),
     body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"), async (req, res) => {
     Password= await bcrypt.hash(req.body.Password, 10);

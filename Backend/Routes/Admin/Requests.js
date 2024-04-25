@@ -1,11 +1,12 @@
 // ====================== Initialization ======================
 const express = require('express');
 const router = express.Router();
-const conn = require('../../DB/Connection')
-const isAdmin = require("../Middleware/Admin")
+const conn = require('../../DB/Connection');
+const { adminAuthorize } = require('../Middleware/authorize');
+
 
 // ====================== Requests ======================
-router.get("/",isAdmin, (req, res) => {
+router.get("/",adminAuthorize, (req, res) => {
     const query = "SELECT requests.ID AS RID ,requests.Quantity,requests.State,user.Name AS SName,products.Name AS PName,products.Stock,warehouses.Name AS WName FROM `requests` join user ON user.ID = requests.SID join products on requests.PID = products.ID JOIN warehouses on warehouses.ID = requests.WID WHERE `State` = 'Pending';";
     conn.query(query, (err, data) => {
         if (err) return (res.json("Erorr"));
@@ -13,7 +14,7 @@ router.get("/",isAdmin, (req, res) => {
     });
 })
 
-router.put("/accept", isAdmin, (req, res) => {
+router.put("/accept", adminAuthorize, (req, res) => {
     const query = "UPDATE `requests` SET `State`='Accepted' WHERE `ID` = " + req.body.RID + ";";
     conn.query(query, (error, data) => {
         if (error) {
@@ -27,7 +28,7 @@ router.put("/accept", isAdmin, (req, res) => {
     });
 })
 
-router.put("/decline", isAdmin, (req, res) => {
+router.put("/decline", adminAuthorize, (req, res) => {
     const query = "UPDATE `requests` SET `State`='Declined' WHERE `ID` = " + req.body.RID + ";";
     conn.query(query, (error, data) => {
         if (error) {
