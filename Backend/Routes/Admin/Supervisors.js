@@ -7,7 +7,7 @@ const util = require("util");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { adminAuthorize } = require('../Middleware/authorize');
-const { decryptData } = require('../Authentication/BackendEncryption');
+const { decryptData, handleData } = require('../Authentication/BackendEncryption');
 
 // ====================== Requests ======================
 router.get("/", adminAuthorize, (req, res) => {
@@ -17,20 +17,17 @@ router.get("/", adminAuthorize, (req, res) => {
         return res.json(data);
     });
 })
-const handleData = (req , res , next) => {
-    req.body = JSON.parse(decryptData(req.body.data).replace('"', '').replace('"', ''));
-    console.log(req.body);
-    next();
-}
+
 router.post("/", adminAuthorize,handleData,
     body("Email").isEmail().withMessage("Please Enter Valid Email"),
-    body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 50 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
-    body("Password").isLength({ min: 8, max: 50 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
+    body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
+    body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
 
     async (req, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
+                console.log(errors);
                 return res.status(400).json({ errors: errors.array() });
             }
 
@@ -52,6 +49,7 @@ router.post("/", adminAuthorize,handleData,
                 const insert = "INSERT INTO user VALUES (NULL,'" + user.Name + "','" + user.Email + "','" + user.Password + "','" + user.Token + "','Supervisor','" + user.Phone + "','1')";
                 await query(insert);
                 delete user.Password;
+                //not important data to be encrypted
                 res.status(200).json("Supervisor Added Successfully")
             }
         }
@@ -79,9 +77,14 @@ router.delete("/:ID", adminAuthorize, (req, res) => {
     });
 })
 
-router.put("/", adminAuthorize, body("Email").isEmail().withMessage("Please Enter Valid Email"),
+router.put("/", adminAuthorize,handleData, body("Email").isEmail().withMessage("Please Enter Valid Email"),
     body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
     body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        return res.status(400).json({ errors: errors.array() });
+    }
     Password= await bcrypt.hash(req.body.Password, 10);
     const query = "UPDATE `user` SET `Name`='" + req.body.Name + "',`Email`='" + req.body.Email + "',`Password`='" + Password + "',`Phone`='" + req.body.Phone + "' WHERE `ID` = " + req.body.PID + ";";
     conn.query(query, (error, data) => {

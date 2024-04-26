@@ -5,7 +5,7 @@ import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { encryptData } from '../FrontendEncryption';
 axios.defaults.withCredentials = true
-let PID;
+let supervisorToken;
 function SupervisorsManagement() {
     const navigate = useNavigate();
     const [data, setData] = useState({
@@ -13,6 +13,7 @@ function SupervisorsManagement() {
         Email: '',
         Password: '',
         Phone: '',
+        Token: ''
     });
 
     // const [Name, setName] = useState("");
@@ -57,17 +58,16 @@ function SupervisorsManagement() {
             .catch(err => console.log("msh sh8ala", err))
     }
     function Update(ID) {
-        PID = ID;
+        supervisorToken = ID;
         updateform();
     }
     function UpdateData() {
+        console.log(data);
+        // setData({...data, Token: supervisorToken})
+        let updateData_encrypted = encryptData(data);
+        // console.log(encryptData(data));
         axios.put('http://localhost:4000/supervisors', {
-
-            Name: data.Name,
-            Email: data.Email,
-            Password: data.Password,
-            Phone: data.Phone,
-            PID: PID
+            data: updateData_encrypted,
 
         })
             .then(res => {
@@ -110,7 +110,7 @@ function SupervisorsManagement() {
                                     <td>{Data.Phone}</td>
                                     <td>{Data.Status ? "Active" : "In-Active"}</td>
                                     <td>
-                                        <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { Update(data.ID) }}>Update</button>
+                                        <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { setData({...data,Token: data.Token}) }}>Update</button>
                                             <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteSupervisor(data.ID) }} >Delete</button>
                                         </div>
                                     </td>

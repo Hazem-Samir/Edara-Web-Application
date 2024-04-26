@@ -10,19 +10,20 @@ const Login = () => {
 	const navigate = useNavigate();
 
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [data, setData] = useState({
+        Email: '',
+        Password: '',
+    });
 	const [cookies, setCookie] = useCookies(['user']);
 	const Login = (event) => {
 		event.preventDefault();
 	};
 	function check() {
-		let email_encrypted = encryptData(email);
-		let password_encrypted = encryptData(password);
-		console.log(email);
+		let data_encrypted = encryptData(data);
+		console.log(data);
 
 		// console.log(password_encrypted.length);
-		axios.post('http://localhost:4000/Authentication', { Email: email_encrypted, Password: password_encrypted})
+		axios.post('http://localhost:4000/Authentication', { data: data_encrypted})
 			.then(res => {
 				const decryptedData = JSON.parse(decryptData(res.data));
 			setCookie('Name', decryptedData.name, { path: '/' });
@@ -43,12 +44,12 @@ const Login = () => {
 					<h2>Login Form</h2>
 					<form onSubmit={(e) => Login(e)}>
 						<div className="inputBox">
-							<input id="email" type="email" required placeholder="Email" value={email}
-								onChange={(event) => { setEmail(event.target.value) }} />
+							<input id="email" type="email" required placeholder="Email" value={data.Email}
+								onChange={(event) => { setData({...data,Email: event.target.value})}} />
 						</div>
 						<div className="inputBox">
-							<input id="password" type="password" required placeholder="Password" value={password}
-								onChange={(event) => { setPassword(event.target.value) }}
+							<input id="password" type="password" required placeholder="Password" value={data.Password}
+								onChange={(event) => { setData({...data,Password: event.target.value}) }}
 							/>
 						</div>
 						<div className="inputBox">
