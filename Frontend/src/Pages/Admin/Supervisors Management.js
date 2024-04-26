@@ -3,36 +3,45 @@ import { closeform, closeupdateform, showform, updateform } from '../../JS/main'
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { encryptData } from '../FrontendEncryption';
 axios.defaults.withCredentials = true
 let PID;
 function SupervisorsManagement() {
     const navigate = useNavigate();
-    const [Name, setName] = useState("");
-    const [Email, setEmail] = useState("");
-    const [Password, setPassword] = useState("");
-    const [Phone, setPhone] = useState("");
+    const [data, setData] = useState({
+        Name: '',
+        Email: '',
+        Password: '',
+        Phone: '',
+    });
+
+    // const [Name, setName] = useState("");
+    // const [Email, setEmail] = useState("");
+    // const [Password, setPassword] = useState("");
+    // const [Phone, setPhone] = useState("");
     const [supervisors, getsuperviosrs] = useState([]);
     const [reload, setreload] = useState(0);
 
     useEffect(() => {
         axios.get('http://localhost:4000/supervisors/')
-            .then(res => getsuperviosrs(res.data))
+            .then(res => {
+                console.log(res.data);
+                getsuperviosrs(res.data)
+            })
             .catch(err => navigate("/"))
 
     }, [reload])
 
     function InsertData() {
-
-        axios.post('http://localhost:4000/supervisors/', { Name: Name, Email: Email, Password: Password, Phone: Phone })
+        let data_encrypted = encryptData(data);
+        console.log(encryptData(data));
+        axios.post('http://localhost:4000/supervisors/', { data:data_encrypted })
             .then(res => {
                 console.log(res.data);
                 // window.location.reload(false);
                 closeform();
                 setreload(!reload);
-                setName("");
-                setEmail("");
-                setPassword("");
-                setPhone("");
+                setData({});
             })
             .catch(err => console.log("msh sh8ala", err))
     }
@@ -54,19 +63,16 @@ function SupervisorsManagement() {
     function UpdateData() {
         axios.put('http://localhost:4000/supervisors', {
 
-            Name: Name,
-            Email: Email,
-            Password: Password,
-            Phone: Phone,
+            Name: data.Name,
+            Email: data.Email,
+            Password: data.Password,
+            Phone: data.Phone,
             PID: PID
 
         })
             .then(res => {
                 console.log(res);
-                setName("");
-                setEmail("");
-                setPassword("");
-                setPhone("");
+                setData({});
                 // window.location.reload(false);
                 closeupdateform();
                 setreload(!reload);
@@ -94,15 +100,15 @@ function SupervisorsManagement() {
                 </thead>
                 <tbody>
                     {
-                        supervisors.map((data, i) => {
+                        supervisors.map((Data, i) => {
 
                             return (
                                 <tr key={i}>
-                                    <td>{data.Name}</td>
-                                    <td>{data.Email}</td>
-                                    <td>{data.Password}</td>
-                                    <td>{data.Phone}</td>
-                                    <td>{data.Status ? "Active" : "In-Active"}</td>
+                                    <td>{Data.Name}</td>
+                                    <td>{Data.Email}</td>
+                                    <td>{Data.Password}</td>
+                                    <td>{Data.Phone}</td>
+                                    <td>{Data.Status ? "Active" : "In-Active"}</td>
                                     <td>
                                         <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { Update(data.ID) }}>Update</button>
                                             <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteSupervisor(data.ID) }} >Delete</button>
@@ -125,10 +131,10 @@ function SupervisorsManagement() {
                         <div className="container">
                             <h3>Add Supervisor</h3>
                             <div className="form">
-                                <input placeholder="Name" type="text" value={Name} onChange={(e) => { setName(e.target.value) }} id="name" />
-                                <input placeholder="Email" type="email" value={Email} onChange={(e) => { setEmail(e.target.value) }} id="location" />
-                                <input placeholder="Password" type="password" value={Password} onChange={(e) => { setPassword(e.target.value) }} id="location" />
-                                <input placeholder="Phone" type="phone" value={Phone} onChange={(e) => { setPhone(e.target.value) }} id="location" />
+                                <input placeholder="Name" type="text" value={data.Name} onChange={(e) => { setData({...data,Name: e.target.value}) }} id="name" />
+                                <input placeholder="Email" type="email" value={data.Email} onChange={(e) => { setData({...data,Email: e.target.value})}} id="location" />
+                                <input placeholder="Password" type="password" value={data.Password} onChange={(e) => { setData({...data,Password: e.target.value}) }} id="location" />
+                                <input placeholder="Phone" type="phone" value={data.Phone} onChange={(e) => { setData({...data,Phone: e.target.value}) }} id="location" />
 
                                 <button className="button" onClick={() => { InsertData() }} id="create">Add Supervisor</button>
                             </div></div></div></div>
@@ -140,10 +146,10 @@ function SupervisorsManagement() {
                         <div className="container">
                             <h3>Update Supervisor</h3>
                             <div className="form">
-                                <input placeholder="Name" type="text" value={Name} onChange={(e) => { setName(e.target.value) }} id="name" />
-                                <input placeholder="Email" type="email" value={Email} onChange={(e) => { setEmail(e.target.value) }} id="location" />
-                                <input placeholder="Password" type="password" value={Password} onChange={(e) => { setPassword(e.target.value) }} id="location" />
-                                <input placeholder="Phone" type="phone" value={Phone} onChange={(e) => { setPhone(e.target.value) }} id="location" />
+                                <input placeholder="Name" type="text" value={data.Name} onChange={(e) => { setData({...data,Name: e.target.value}) }} id="name" />
+                                <input placeholder="Email" type="email" value={data.Email} onChange={(e) => { setData({...data,Email: e.target.value})}} id="location" />
+                                <input placeholder="Password" type="password" value={data.Password} onChange={(e) => { setData({...data,Password: e.target.value}) }} id="location" />
+                                <input placeholder="Phone" type="phone" value={data.Phone} onChange={(e) => { setData({...data,Phone: e.target.value}) }} id="location" />
 
                                 <button className="button" onClick={() => { UpdateData() }} id="create">Update Supervisor</button>
                             </div></div></div></div>

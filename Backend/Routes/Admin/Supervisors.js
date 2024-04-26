@@ -7,6 +7,7 @@ const util = require("util");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { adminAuthorize } = require('../Middleware/authorize');
+const { decryptData } = require('../Authentication/BackendEncryption');
 
 // ====================== Requests ======================
 router.get("/", adminAuthorize, (req, res) => {
@@ -16,11 +17,15 @@ router.get("/", adminAuthorize, (req, res) => {
         return res.json(data);
     });
 })
-
-router.post("/", adminAuthorize,
+const handleData = (req , res , next) => {
+    req.body = JSON.parse(decryptData(req.body.data).replace('"', '').replace('"', ''));
+    console.log(req.body);
+    next();
+}
+router.post("/", adminAuthorize,handleData,
     body("Email").isEmail().withMessage("Please Enter Valid Email"),
-    body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
-    body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
+    body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 50 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
+    body("Password").isLength({ min: 8, max: 50 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
 
     async (req, res) => {
         try {

@@ -7,33 +7,40 @@ const util = require("util");
 const bcrypt = require("bcrypt");
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const { decryptData, encryptData } = require('./BackendEncryption');
+
+
 
 
 router.use(cookieParser());
 
-
+const handleEmail = (req , res , next) => {
+    req.body.Email = decryptData(req.body.Email).replace('"', '').replace('"', '');
+    console.log(req.body.Email);
+    next();
+}
 // ====================== Requests ======================
-router.post("/",
+router.post("/",handleEmail,
     body("Email").isEmail().withMessage("Please Enter Valid Email"),
-    body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
+    body("Password").isLength({ min: 8, max: 50 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
     async (req, res) => {
-        // console.log(req.session.id);
-        
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
+                console.log(errors);
                 return res.status(400).json({ errors: errors.array() });
             }
-            
+            let password = decryptData(req.body.Password).replace('"', '').replace('"', '');
+            console.log(password);
+            // let email = decryptData(req.body.Email);
             const query = util.promisify(conn.query).bind(conn);
             const user = await query("select * from user where Email ='" + req.body.Email + "'");
             if (user.length == 0) {
                 res.status(404).json("Email or Passowrd Not Found");
             }
-            const checkPassword= await bcrypt.compare(req.body.Password,user[0].Password);
+            const checkPassword= await bcrypt.compare(password,user[0].Password);
             if(checkPassword){
                 delete user[0].Password;
-                // res.cookie('Token2', `${user[0].Token}`);
 
                 // Generate a JWT token
                 const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, 'Network Security', { expiresIn: '1h' });
@@ -41,22 +48,21 @@ router.post("/",
                 req.session.visited = true;
                 req.session.user = token;
                 console.log(req.session.id);
-                res.status(200).json({token:token , type:user[0].Type , name: user[0].Name});
+                console.log(encryptData({token:token , type:user[0].Type , name: user[0].Name}).length);
+                // res.status(200).json({token:token , type:user[0].Type , name: user[0].Name});
+                res.status(200).json(encryptData({token:token , type:user[0].Type , name: user[0].Name}));
             }
-
             else {
                 res.status(404).json("Email or Password is Inccorect");
             }
-
         }
-
-
         catch (err) {
             // res.status(500).json("Error");
         }
+})
 
-
-    })
+// updates made by sabah
+// Function to encrypt data using DES
 
 router.put("/", (req, res) => {
     const query = "UPDATE `user` SET `Status`='0' WHERE Token = '"+ req.body.params.Token +"';";
