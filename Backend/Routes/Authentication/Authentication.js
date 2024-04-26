@@ -7,20 +7,15 @@ const util = require("util");
 const bcrypt = require("bcrypt");
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { decryptData, encryptData } = require('./BackendEncryption');
+const { decryptData, encryptData, handleData } = require('./BackendEncryption');
 
 
 
 
 router.use(cookieParser());
 
-const handleEmail = (req , res , next) => {
-    req.body.Email = decryptData(req.body.Email).replace('"', '').replace('"', '');
-    console.log(req.body.Email);
-    next();
-}
 // ====================== Requests ======================
-router.post("/",handleEmail,
+router.post("/",handleData,
     body("Email").isEmail().withMessage("Please Enter Valid Email"),
     body("Password").isLength({ min: 8, max: 50 }).withMessage("Password sholud be bewteen 8 to 18 charcters"),
     async (req, res) => {
@@ -30,15 +25,17 @@ router.post("/",handleEmail,
                 console.log(errors);
                 return res.status(400).json({ errors: errors.array() });
             }
-            let password = decryptData(req.body.Password).replace('"', '').replace('"', '');
-            console.log(password);
+            // let password = decryptData(req.body.Password).replace('"', '').replace('"', '');
+            console.log(req.body.Email);
             // let email = decryptData(req.body.Email);
             const query = util.promisify(conn.query).bind(conn);
             const user = await query("select * from user where Email ='" + req.body.Email + "'");
+            
             if (user.length == 0) {
+                // console.log('hello');
                 res.status(404).json("Email or Passowrd Not Found");
             }
-            const checkPassword= await bcrypt.compare(password,user[0].Password);
+            const checkPassword= await bcrypt.compare(req.body.Password,user[0].Password);
             if(checkPassword){
                 delete user[0].Password;
 

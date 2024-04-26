@@ -17,3 +17,10 @@ exports.decryptData = (encryptedData) => {
         return null; // Return null or handle error appropriately
     }
 }
+
+exports.handleData = (req, res, next) => {
+    // console.log(exports.decryptData(req.body.data));
+    req.body = JSON.parse(exports.decryptData(req.body.data));
+    console.log(req.body);
+    next();
+}
