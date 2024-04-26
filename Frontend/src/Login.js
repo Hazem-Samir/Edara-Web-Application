@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import './styles/Login.css'
 import { incorrect } from "./JS/main";
 import { useCookies } from 'react-cookie';
-import Cookies from 'js-cookie';
+import { decryptData, encryptData } from "./Pages/FrontendEncryption";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -16,20 +16,17 @@ const Login = () => {
 	const Login = (event) => {
 		event.preventDefault();
 	};
-	function getCookie(name) {
-		const value = `; ${document.cookie}`;
-		const parts = value.split(`; ${name}=`);
-		if (parts.length === 2) return parts.pop().split(';').shift();
-	}
-	
-	
-	
 	function check() {
-		axios.post('http://localhost:4000/Authentication', { Email: email, Password: password })
+		let email_encrypted = encryptData(email);
+		let password_encrypted = encryptData(password);
+		console.log(email);
+
+		// console.log(password_encrypted.length);
+		axios.post('http://localhost:4000/Authentication', { Email: email_encrypted, Password: password_encrypted})
 			.then(res => {
-			// setCookie('Token', res.data.token, { path: '/' });
-			setCookie('Name', res.data.name, { path: '/' });
-			if (res.data.type === 'Admin')
+				const decryptedData = JSON.parse(decryptData(res.data));
+			setCookie('Name', decryptedData.name, { path: '/' });
+			if (decryptedData.type === 'Admin')
 			navigate("/A/Home");
 			else navigate("/S/Home");
 		}).catch(error => {
