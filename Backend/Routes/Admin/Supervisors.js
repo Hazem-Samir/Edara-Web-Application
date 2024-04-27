@@ -79,14 +79,22 @@ router.delete("/:ID", adminAuthorize, (req, res) => {
 
 router.put("/", adminAuthorize,handleData, body("Email").isEmail().withMessage("Please Enter Valid Email"),
     body("Name").isString().withMessage("Please Enter Valid Name").isLength({ min: 4, max: 25 }).withMessage("Name sholud be bewteen 4 to 25 charcters"),
-    body("Password").isLength({ min: 8, max: 18 }).withMessage("Password sholud be bewteen 8 to 18 charcters"), async (req, res) => {
-    const errors = validationResult(req);
+    body("Password").isLength({ min: 8, max: 18 }).withMessage("Password should be bewteen 8 to 18 charcters"), async (req, res) => {
+        const errors = validationResult(req);
+        let query;
     if (!errors.isEmpty()) {
         console.log(errors);
-        return res.status(400).json({ errors: errors.array() });
-    }
-    Password= await bcrypt.hash(req.body.Password, 10);
-    const query = "UPDATE `user` SET `Name`='" + req.body.Name + "',`Email`='" + req.body.Email + "',`Password`='" + Password + "',`Phone`='" + req.body.Phone + "' WHERE `ID` = " + req.body.PID + ";";
+        if (errors.array()[0].value.length==0) {
+            query = "UPDATE `user` SET `Name`='" + req.body.Name + "',`Email`='" + req.body.Email + "',`Phone`='" + req.body.Phone + "' WHERE `Token` = '" + req.body.Token + "';";
+        } else {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        }
+    else {
+        Password = await bcrypt.hash(req.body.Password, 10);
+        query = "UPDATE `user` SET `Name`='" + req.body.Name + "',`Email`='" + req.body.Email + "',`Password`='" + Password + "',`Phone`='" + req.body.Phone + "' WHERE `Token` = '" + req.body.Token + "';";
+
+        }
     conn.query(query, (error, data) => {
         if (error) {
             res.statusCode = 500;
