@@ -57,13 +57,12 @@ function SupervisorsManagement() {
             })
             .catch(err => console.log("msh sh8ala", err))
     }
-    function Update(ID) {
-        supervisorToken = ID;
+    function Update(Data) {
+        setData({ Token: Data.Token, Name: Data.Name, Email: Data.Email, Phone: Data.Phone, Password: ''})
+        console.log(data);
         updateform();
     }
     function UpdateData() {
-        console.log(data);
-        // setData({...data, Token: supervisorToken})
         let updateData_encrypted = encryptData(data);
         // console.log(encryptData(data));
         axios.put('http://localhost:4000/supervisors', {
@@ -92,7 +91,7 @@ function SupervisorsManagement() {
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Password</th>
+                        {/* <th>Password</th> */}
                         <th>Phone</th>
                         <th>Status</th>
                         <th>Edit Info</th>
@@ -106,12 +105,12 @@ function SupervisorsManagement() {
                                 <tr key={i}>
                                     <td>{Data.Name}</td>
                                     <td>{Data.Email}</td>
-                                    <td>{Data.Password}</td>
+                                    {/* <td>{Data.Password}</td> */}
                                     <td>{Data.Phone}</td>
                                     <td>{Data.Status ? "Active" : "In-Active"}</td>
                                     <td>
-                                        <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { setData({...data,Token: data.Token}) }}>Update</button>
-                                            <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteSupervisor(data.ID) }} >Delete</button>
+                                        <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { Update(Data)}}>Update</button>
+                                            <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteSupervisor(Data.ID) }} >Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -148,7 +147,7 @@ function SupervisorsManagement() {
                             <div className="form">
                                 <input placeholder="Name" type="text" value={data.Name} onChange={(e) => { setData({...data,Name: e.target.value}) }} id="name" />
                                 <input placeholder="Email" type="email" value={data.Email} onChange={(e) => { setData({...data,Email: e.target.value})}} id="location" />
-                                <input placeholder="Password" type="password" value={data.Password} onChange={(e) => { setData({...data,Password: e.target.value}) }} id="location" />
+                                <input placeholder="Password" type="password" onChange={(e) => { setData({...data,Password: e.target.value}) }} id="location" />
                                 <input placeholder="Phone" type="phone" value={data.Phone} onChange={(e) => { setData({...data,Phone: e.target.value}) }} id="location" />
 
                                 <button className="button" onClick={() => { UpdateData() }} id="create">Update Supervisor</button>
