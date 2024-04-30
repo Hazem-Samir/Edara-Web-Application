@@ -109,7 +109,7 @@ function Products() {
         <section>
             <div className="page-name">
                 <h2>Products Managment</h2>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p>
+                {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p> */}
             </div>
 
             <table>

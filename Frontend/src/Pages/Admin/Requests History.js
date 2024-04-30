@@ -22,8 +22,8 @@ function RequestsHistory() {
         <section>
             <div className="page-name">
                 <h2>Requests History</h2>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus
-                </p>
+                {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus
+                </p> */}
             </div>
             <table className="table">
                 <thead>

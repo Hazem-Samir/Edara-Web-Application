@@ -1,20 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
-
+import Stack from "@mui/material/Stack";
+import Avatar from '@mui/material/Avatar';
+import {deepOrange} from '@mui/material/colors';
+import logo from '../idea.png';
 function AdminNavBar() {
     const navigate = useNavigate();
+    const adminRoutes = [
+        {
+            id: 1,
+            route: 'Home',
+            path: '/A/Home',
+            className: 'fa fa-home'
+        },
+        {
+            id: 2,
+            route: 'Warehouses',
+            path: '/A/Warehouses Management',
+            className: 'fa fa-building'
+        },
+        {
+            id: 3,
+            route: 'Supervisors',
+            path: '/A/Supervisors Management',
+            className: 'fa fa-users'
+        },
+        {
+            id: 4,
+            route: 'Requests History',
+            path: '/A/Requests History',
+            className: 'fa fa-history'
+        },
+    ]
     function Logout() {
         axios.put('http://localhost:4000/Authentication', {
-            params: {
-                Token: Cookies.get('Token'),
-            }
+            // params: {
+            //     Token: Cookies.get('Token'),
+            // }
+            Token: Cookies.get('Token')
         })
             .then(res => {
+                console.log(Cookies.get());
                 Cookies.remove('Name');
                 Cookies.remove('Token');
-                Cookies.remove('connect.sid');
+                Cookies.remove("'connect.sid'");
                 navigate("/");
             })
             .catch(err => console.log("msh sh8ala", err))
@@ -23,34 +54,34 @@ function AdminNavBar() {
     return (
         <header>
             <nav className="container">
-
-                <h1>Edara</h1>
+                <Stack direction='row' spacing={2}>
+                    <img src={logo} alt="logo" width={40} height={40}/>
+                    <p className="web-title">Edara</p>
+                </Stack>
                 <div className="links">
                     <span className="menu-icon">
-
                         <span></span>
                         <span></span>
                         <span></span>
-
-
                     </span>
-                    <ul>
-                        <li><Link to="/A/Home"><i className="fa fa-home" aria-hidden="true"></i> Home</Link>
-                        </li>
-                        <li><Link to="/A/Warehouses Management"><i className="fa fa-building" aria-hidden="true"></i> Warehouses</Link></li>
-                        <li><Link to="/A/Supervisors Management"><i className="fa fa-users" aria-hidden="true"></i> Supervisors</Link>
-                        </li>
-                        <li><Link to="/A/Requests History"><i className="fa fa-history" aria-hidden="true"></i> Requests History</Link></li>
-                    </ul>
+                    <Stack direction='row' spacing={3}>
+                        {
+                            adminRoutes.map((subpage) => (
+                                    <NavLink to={subpage.path} key={subpage.route} className="route" activeClassName='active'>
+                                        <Stack direction='row' spacing={1}>
+                                            <i className={subpage.className} aria-hidden="true"></i>  <p>{subpage.route}</p>
+                                        </Stack>
+                                    </NavLink>
+                            ))
+                        }
+                    </Stack>
                 </div>
                 <div className="user">
+                    {/* <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>  */}
+                    <Avatar sx={{ width: 35, height: 35 }}   alt={Cookies.get('Name')} src="/static/images/avatar/1.jpg" />
 
-
-                    <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i> 
-
-                    <p>Hello, {Cookies.get('Name')} </p>
+                    <p className="user-profile">Hello, {Cookies.get('Name')} </p>
                     <ul>
-                        {/* <li><Link to="#"> <i className="fa fa-gear"></i> Settings</Link></li> */}
                         <li><button className="logout" onClick={() => { Logout(); }}><i className="fa fa-sign-out" aria-hidden="true"></i> Logout</button></li>
                     </ul>
                 </div>

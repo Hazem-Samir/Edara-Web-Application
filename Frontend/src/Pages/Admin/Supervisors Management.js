@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { encryptData } from '../FrontendEncryption';
+import { FaPen } from "react-icons/fa";
+
 axios.defaults.withCredentials = true
 let supervisorToken;
 function SupervisorsManagement() {
@@ -16,10 +18,6 @@ function SupervisorsManagement() {
         Token: ''
     });
 
-    // const [Name, setName] = useState("");
-    // const [Email, setEmail] = useState("");
-    // const [Password, setPassword] = useState("");
-    // const [Phone, setPhone] = useState("");
     const [supervisors, getsuperviosrs] = useState([]);
     const [reload, setreload] = useState(0);
 
@@ -39,7 +37,6 @@ function SupervisorsManagement() {
         axios.post('http://localhost:4000/supervisors/', { data:data_encrypted })
             .then(res => {
                 console.log(res.data);
-                // window.location.reload(false);
                 closeform();
                 setreload(!reload);
                 setData({});
@@ -83,8 +80,8 @@ function SupervisorsManagement() {
         <section>
             <div className="page-name">
                 <h2>Supervisors Management</h2>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus
-                </p>
+                
+                
             </div>
             <table>
                 <thead>
@@ -117,13 +114,9 @@ function SupervisorsManagement() {
                             )
                         })
                     }
-
-
-
                 </tbody>
             </table>
             <div className="add"><button className="button" onClick={showform}>Add</button></div>
-
             <div style={{ display: "none" }} id="form" className="form" >
                 <div className="form">
                     <div className="overlay">
@@ -134,10 +127,8 @@ function SupervisorsManagement() {
                                 <input placeholder="Email" type="email" value={data.Email} onChange={(e) => { setData({...data,Email: e.target.value})}} id="location" />
                                 <input placeholder="Password" type="password" value={data.Password} onChange={(e) => { setData({...data,Password: e.target.value}) }} id="location" />
                                 <input placeholder="Phone" type="phone" value={data.Phone} onChange={(e) => { setData({...data,Phone: e.target.value}) }} id="location" />
-
                                 <button className="button" onClick={() => { InsertData() }} id="create">Add Supervisor</button>
                             </div></div></div></div>
-
             </div>
             <div style={{ display: "none" }} id="updateform" className="form" >
                 <div className="form">

@@ -47,7 +47,6 @@ function WarehousesManagement() {
         console.log(value);
         console.log(wid);
         axios.put('http://localhost:4000/warehouses', {
-           
                 WID: wid,
                 Name: Name,
                 Location: Location,
@@ -96,7 +95,7 @@ function WarehousesManagement() {
         <section>
             <div className="page-name">
                 <h2>Warehouse Managment</h2>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p>
+                {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p> */}
             </div>
            
             <table>
