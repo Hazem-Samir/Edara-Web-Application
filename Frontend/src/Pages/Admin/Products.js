@@ -112,43 +112,45 @@ function Products() {
                 {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p> */}
             </div>
 
-            <table>
+            <div className='table-container'>
+                <table>
 
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Photo</th>
-                        <th>Quanitity</th>
-                        <th>Status</th>
-                        <th>Warehouse Name</th>
-                        <th >Edit Info</th>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Photo</th>
+                            <th>Quanitity</th>
+                            <th>Status</th>
+                            <th>Warehouse Name</th>
+                            <th >Edit Info</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        products.map((data, i) => {
-                            let photo_url = `http://localhost:4000/${data.Photo}`;
-                            return (
-                                <tr key={i}>
-                                    <td>{data.PName}</td>
-                                    <td>{data.Description}</td>
-                                    <td><img alt="Product Photo" src={photo_url} /></td>
-                                    <td>{data.Stock}</td>
-                                    <td>{data.Status ? "Active" : "In-Active"}</td>
-                                    <td>{data.Name}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            products.map((data, i) => {
+                                let photo_url = `http://localhost:4000/${data.Photo}`;
+                                return (
+                                    <tr key={i}>
+                                        <td>{data.PName}</td>
+                                        <td>{data.Description}</td>
+                                        <td><img alt="Product Photo" src={photo_url} /></td>
+                                        <td>{data.Stock}</td>
+                                        <td>{data.Status ? "Active" : "In-Active"}</td>
+                                        <td>{data.Name}</td>
 
-                                    <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { UpdateProducts(data.ID) }}>Update</button>
-                                        <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteProduct(data.ID) }} >Delete</button>
-                                    </div>
-                                    </td>
-                                </tr>
-                            );
-                        })
-                    }
-                </tbody>
-            </table>
+                                        <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { UpdateProducts(data.ID) }}>Update</button>
+                                            <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteProduct(data.ID) }} >Delete</button>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
             <div className="add"><button className="button" onClick={() => { AddProducts() }} >Add</button>
                 <button className="button" onClick={() => { DeleteAll() }} id="delall">delete all</button></div>
 

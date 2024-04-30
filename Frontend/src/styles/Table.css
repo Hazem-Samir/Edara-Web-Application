@@ -1,23 +1,45 @@
 @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 section .page-name {
-    text-align: center;
+    /* text-align: center; */
     /* margin-top: 100px; */
-    margin-bottom: 100px;
+    margin-bottom: 50px;
     margin-left: auto;
     margin-right: auto;
 }
+section .page-name .header-container{
+    margin-left: 70px;
+    /* background-color: blue; */
+    display: flex;
+    align-items:baseline;
+}
+section .page-name .header-container .count{
+    font-size: 15px;
+    color: gray;
+}
+section .page-name .header-container .page-title{
+    font-size: 30px;
+    font-weight: 600;
+    color: rgb(78, 78, 78);
+    /* background-color: red; */
+}
 
-section table {
-    /* font-weight: bold; */
+.table-container{
+    border: 2px solid rgb(230, 230, 230);
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     border-radius: 10px;
-    border: 1px solid rgb(230, 230, 230);
-/* box-shadow: 0px 3px 7px 9px #ddd; */
-   padding: 20px;
-
+    padding: 30px;
+}
+section table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    padding: 20px;
     height: 200px;
     color: #2b2b2b;   
+
 }
 
 
@@ -45,18 +67,13 @@ section table {
     }
 }
 
-section table td,section table th    {
-    padding: 5px 5px;
-    border: 2px solid #FFFFFF;
-    /* border-radius: 5px; */
-}
-
-
 section table thead th {
-    /* background-color: #d5d8dd; */
     height: 32px;
-    /* border-bottom: 3px solid #a88787; */
-    
+    padding: 5px 5px 20px 5px;
+}
+section table thead th , 
+section table tr td{
+    border-bottom: 1px solid rgb(219, 219, 219);
 }
 
 section table tbody td {
@@ -93,7 +110,7 @@ section table tbody td:last-child  {
     border: 0px solid #333;
     cursor: pointer;
     padding: 8px;
-    box-shadow: 0px 6px 8px -2px #5c5d5e;
+    /* box-shadow: 0px 6px 8px -2px #5c5d5e; */
     color: white;
     width: 100px;
     height: 30px;
@@ -104,44 +121,67 @@ section table tbody td:last-child  {
     font-weight: normal;
     font-size: small;
 }
-.add {
-display: flex;
-    justify-content: center;
-    margin-top: 40px;
-}
- .add .button{
-   text-align: center;
- width: 100px;
-        background-color: #5384ce;
-        border-radius: 10px;
-        border: 0px solid #333;
-        cursor: pointer;
-        padding: 8px;
-        box-shadow: 0px 6px 8px -2px #5c5d5e;
-        color: white;
-        margin: 15px;  
-    
+
+.add .button{
+    text-align: center;
+    width: 100px;
+    background-color: #5384ce;
+    border-radius: 10px;
+    /* border: 0px solid #333; */
+    cursor: pointer;
+    padding: 8px;
+    /* box-shadow: 0px 6px 8px -2px #5c5d5e; */
+    color: white;
+    /* margin: 15px;   */
 }
 
 .button,.add,.Productbutton {
     transition: 0.3s;
 }
 .button:hover,.Productbutton:hover {
-    
-    letter-spacing: 1px;
-width: 120px;
+    /* letter-spacing: 1px; */
+    background-color: #5079b6;
+    box-shadow: 1px 1px 6px rgb(139, 139, 139,.5);
+    /* width: 120px; */
 }
 .add .button:hover{
-    width: 105px;
+    /* width: 105px; */
 }
-
-
-
-
-
- table img {
+table img {
     width: 100px;
     height: 100px;
-   padding: 10px;
-   margin-left: auto;
- }
+    padding: 10px;
+    margin-left: auto;
+}
+
+nav{
+    display: flex;
+    justify-content: flex-end;
+    align-content: end;
+}
+ul{
+    margin-top: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.page-btn{
+    background-color: transparent;
+    border: none;
+    /* padding: 10px; */
+    color: rgb(78, 78, 78);
+    width: 30px;
+    height: 30px;
+}
+.page-item-bar.activate .page-btn{
+    background-color: #648bc5;
+    border-radius: 5px;
+    color: white;
+}
+.arrow{
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: #648bc5;
+}

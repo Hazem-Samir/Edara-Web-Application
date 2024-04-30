@@ -25,36 +25,38 @@ function RequestsHistory() {
                 {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus
                 </p> */}
             </div>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Supervisor Name</th>
-                        <th>Warehouse Name</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>State</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        requestsHistory.map((data, i) => {
-                            
-                            return (
-                                <tr key={i}>
-                                    <td>{data.SuperVisorName}</td>
-                                    <td>{data.WarehouseName}</td>
-                                    <td>{data.ProductName}</td>
-                                    <td>{data.Quantity}</td>
-                                    <td>{data.State}</td>
-                                </tr>
-                            );
-                        })
-                       
-                    }
+            <div className="table-container">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Supervisor Name</th>
+                            <th>Warehouse Name</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            requestsHistory.map((data, i) => {
+                                
+                                return (
+                                    <tr key={i}>
+                                        <td>{data.SuperVisorName}</td>
+                                        <td>{data.WarehouseName}</td>
+                                        <td>{data.ProductName}</td>
+                                        <td>{data.Quantity}</td>
+                                        <td>{data.State}</td>
+                                    </tr>
+                                );
+                            })
+                        
+                        }
 
-                   
-                </tbody>
-            </table>
+                    
+                    </tbody>
+                </table>
+            </div>
         </section>
         
 
