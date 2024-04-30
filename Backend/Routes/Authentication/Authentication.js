@@ -7,7 +7,7 @@ const util = require("util");
 const bcrypt = require("bcrypt");
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { decryptData, encryptData, handleData } = require('./BackendEncryption');
+const { decryptData, encryptData, handleData, key } = require('./BackendEncryption');
 
 
 
@@ -29,24 +29,28 @@ router.post("/",handleData,
             console.log(req.body.Email);
             // let email = decryptData(req.body.Email);
             const query = util.promisify(conn.query).bind(conn);
+
+            // the following query returns array of objects
             const user = await query("select * from user where Email ='" + req.body.Email + "'");
             
             if (user.length == 0) {
-                // console.log('hello');
                 res.status(404).json("Email or Passowrd Not Found");
             }
             const checkPassword= await bcrypt.compare(req.body.Password,user[0].Password);
             if(checkPassword){
                 delete user[0].Password;
 
-                // Generate a JWT token
-                const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, 'Network Security', { expiresIn: '1h' });
+                // Generate a JWT(JSON WEB TOKEN)
+                // secretkey = 'Network Security'
+                //initializing jwt
+                const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, key, { expiresIn: '1h' });
                 await query("UPDATE `user` SET `Status` = '1' WHERE Token = '" + user[0].Token + "';");
+                //session
                 req.session.visited = true;
-                req.session.user = token;
+                req.session.user = { token: user[0].Token, username: user[0].Name };
                 console.log(req.session.id);
+                //encryption
                 console.log(encryptData({token:token , type:user[0].Type , name: user[0].Name}).length);
-                // res.status(200).json({token:token , type:user[0].Type , name: user[0].Name});
                 res.status(200).json(encryptData({token:token , type:user[0].Type , name: user[0].Name}));
             }
             else {

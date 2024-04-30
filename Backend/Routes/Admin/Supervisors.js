@@ -42,11 +42,13 @@ router.post("/", adminAuthorize,handleData,
                 const user = {
                     Name: req.body.Name,
                     Email: req.body.Email,
+
+                    //10 -> number of rounds to encrypt the password
                     Password: await bcrypt.hash(req.body.Password, 10),
                     Token: crypto.randomBytes(16).toString("hex"),
                     Phone: req.body.Phone
                 }
-                const insert = "INSERT INTO user VALUES (NULL,'" + user.Name + "','" + user.Email + "','" + user.Password + "','" + user.Token + "','Supervisor','" + user.Phone + "','1')";
+                const insert = "INSERT INTO user VALUES (NULL,'" + user.Name + "','" + user.Email + "','" + user.Password + "','" + user.Token + "','Supervisor','" + user.Phone + "','0')";
                 await query(insert);
                 delete user.Password;
                 //not important data to be encrypted
@@ -93,7 +95,6 @@ router.put("/", adminAuthorize,handleData, body("Email").isEmail().withMessage("
     else {
         Password = await bcrypt.hash(req.body.Password, 10);
         query = "UPDATE `user` SET `Name`='" + req.body.Name + "',`Email`='" + req.body.Email + "',`Password`='" + Password + "',`Phone`='" + req.body.Phone + "' WHERE `Token` = '" + req.body.Token + "';";
-
         }
     conn.query(query, (error, data) => {
         if (error) {

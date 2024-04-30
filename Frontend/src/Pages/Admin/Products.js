@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { closeform, closeupdateform, incorrect, showform, updateform } from '../../JS/main';
 import { useNavigate, useParams } from 'react-router-dom';
+import Stack from "@mui/material/Stack";
+import { FaPen } from 'react-icons/fa';
 axios.defaults.withCredentials = true
 let pid;
 let Photo;
@@ -105,13 +107,45 @@ function Products() {
             })
             .catch(err => console.log("msh sh8ala", err))
     }
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 5;
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const records = products.slice(firstIndex, lastIndex)
+    const nPage = Math.ceil(products.length / recordsPerPage)
+    const numbers = [...Array(nPage + 1).keys()].slice(1)
+    const prePage = () => {
+        if (currentPage !== firstIndex) {
+        setCurrentPage(currentPage - 1)
+    }
+}
+    const nextPage = () => {
+        if (currentPage !== lastIndex) {
+        setCurrentPage(currentPage + 1)
+        }
+    }
+    const changeCPage = (id) => {
+        setCurrentPage(id)
+    }
     return (
         <section>
             <div className="page-name">
-                <h2>Products Managment</h2>
-                {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p> */}
+                <Stack spacing={70} direction='row'>
+                    <div className='leftside'>
+                        <Stack spacing={5} direction='row' className='header-container'>
+                            <div className='page-title'>products Management</div>
+                            <div>
+                                <Stack direction='row' spacing={2}>
+                                    <div className='count'><FaPen /></div>
+                                    <div className='count'>{products.length} products</div>
+                                </Stack>
+                            </div>
+                        </Stack>
+                    </div>
+                    <div className="add rightside"><button className="button" onClick={showform}>Add</button></div>
+                </Stack>
             </div>
-
+            import { FaPen } from 'react-icons/fa';
             <div className='table-container'>
                 <table>
 
@@ -135,7 +169,7 @@ function Products() {
                                     <tr key={i}>
                                         <td>{data.PName}</td>
                                         <td>{data.Description}</td>
-                                        <td><img alt="Product Photo" src={photo_url} /></td>
+                                        <td><img alt="ProductPhoto" src={photo_url} /></td>
                                         <td>{data.Stock}</td>
                                         <td>{data.Status ? "Active" : "In-Active"}</td>
                                         <td>{data.Name}</td>

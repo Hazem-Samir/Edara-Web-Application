@@ -125,7 +125,7 @@ header .user ul {
     background-color: white;
     padding: 0px;
     text-align: left;
-    display: none;
+    /* display: none; */
     border-radius: 10px;
     min-width: 150px;
     box-shadow: 1px 1px 6px rgb(187, 187, 187,.4);
@@ -280,7 +280,7 @@ header .user ul::before {
 
         100% {
             position: absolute;
-            top: calc(100% + 12px);
+            top: calc(100% + 6px);
             opacity: 1;
         }
     }
