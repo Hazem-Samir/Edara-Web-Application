@@ -51,39 +51,41 @@ function SupervisorsRequests() {
                 {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus
                 </p> */}
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Supervisor Name </th>
-                        <th>Warehouse </th>
-                        <th>Product Name</th>
-                        <th>Stock</th>
-                        <th>Requested Quantity</th>
-                        <th>Decision</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        Requests.map((data, i) => {
-                            return (
-                                <tr>
-                                    <td>{data.SName}</td>
-                                    <td>{data.WName}</td>
-                                    <td>{data.PName}</td>
-                                    <td>{data.Stock}</td>
-                                    <td>{data.Quantity}</td>
-                                    <td>
-                                        <div className="buttons"><button className="button" onClick={() => { Accept(data.RID) }}> Accept </button>
-                                            <button className="button" id="Delete" onClick={() => { Decline(data.RID) }}> Decline </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            );
-                        })
-                    }
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Supervisor Name </th>
+                            <th>Warehouse </th>
+                            <th>Product Name</th>
+                            <th>Stock</th>
+                            <th>Requested Quantity</th>
+                            <th>Decision</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            Requests.map((data, i) => {
+                                return (
+                                    <tr>
+                                        <td>{data.SName}</td>
+                                        <td>{data.WName}</td>
+                                        <td>{data.PName}</td>
+                                        <td>{data.Stock}</td>
+                                        <td>{data.Quantity}</td>
+                                        <td>
+                                            <div className="buttons"><button className="button" onClick={() => { Accept(data.RID) }}> Accept </button>
+                                                <button className="button" id="Delete" onClick={() => { Decline(data.RID) }}> Decline </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        }
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
     );

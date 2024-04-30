@@ -97,40 +97,41 @@ function WarehousesManagement() {
                 <h2>Warehouse Managment</h2>
                 {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p> */}
             </div>
-           
-            <table>
+            <div className='table-container'>
+                <table>
 
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Supervisor</th>
-                        <th>PRODUCTS</th>
-                        <th >Edit Info</th>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Supervisor</th>
+                            <th>PRODUCTS</th>
+                            <th >Edit Info</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        warehouses.map((data, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td>{data.WHName}</td>
-                                    <td>{data.Location}</td>
-                                    <td>{data.Status ? "Active" : "In-Active"}</td>
-                                    <td>{data.Name}</td>
-                                    <td><div className="buttons"><Link to={`/A/Warehouse/${data.ID}/products`} className='Productbutton'><i  aria-hidden="true"></i>Products</Link></div></td>
-                                    <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data.ID) }}>Update</button>
-                                        <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID) }} >Delete</button>
-                                    </div>
-                                    </td>
-                                </tr>
-                            );
-                        })
-                    }
-                </tbody>
-            </table>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            warehouses.map((data, i) => {
+                                return (
+                                    <tr key={i}>
+                                        <td>{data.WHName}</td>
+                                        <td>{data.Location}</td>
+                                        <td>{data.Status ? "Active" : "In-Active"}</td>
+                                        <td>{data.Name}</td>
+                                        <td><div className="buttons"><Link to={`/A/Warehouse/${data.ID}/products`} className='Productbutton'><i  aria-hidden="true"></i>Products</Link></div></td>
+                                        <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data.ID) }}>Update</button>
+                                            <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID) }} >Delete</button>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
             <div className="add"><button className="button" onClick={() => { AddWarehouse() }} >Add</button>
                 <button className="button" onClick={()=>{DeleteAll()}} id="delall">delete all</button></div>
 
