@@ -58,11 +58,10 @@ router.post("/",handleData,
         }
 })
 
-// updates made by sabah
-// Function to encrypt data using DES
 
 router.put("/", (req, res) => {
-    const query = "UPDATE `user` SET `Status`='0' WHERE Token = '"+ req.body.params.Token +"';";
+    // console.log(req.body);
+    const query = "UPDATE `user` SET `Status`='0' WHERE Token = '"+ req.body.Token +"';";
     conn.query(query, (error, data) => {
         if (error) {
             res.statusCode = 500;

@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 
 
 exports.adminAuthorize = async (req, res, next) => {
-    if (req.session.user) {
+    const Token = req.cookies.Token;
+    if (req.session.user && Token) {
         const query = util.promisify(conn.query).bind(conn);
-        const Token = req.session.user;
-        // console.log(req.session);
+        console.log(req.cookies);
         req.user = jwt.verify(Token, 'Network Security', (err, decoded) => {
             if (err) {
                 // Handle invalid token
@@ -32,9 +32,9 @@ exports.adminAuthorize = async (req, res, next) => {
 }
 
 exports.supervisorAuthorize = async (req, res, next) => {
-    if (req.session.user) {
+    const Token = req.cookies.Token;
+    if (req.session.user && Token) {
         const query = util.promisify(conn.query).bind(conn);
-        const Token = req.session.user;
         // console.log(req.session);
         req.user = jwt.verify(Token, 'Network Security', (err, decoded) => {
             if (err) {

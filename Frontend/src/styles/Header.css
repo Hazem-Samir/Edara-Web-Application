@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Pacifico&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Alata&family=Silkscreen:wght@400;700&display=swap'); */
 body {
     margin: 0;
     padding: 0;
@@ -26,8 +29,9 @@ a {
 header {
     margin-top: 0px;
     margin-bottom: 60px;
-    box-shadow: 2px 9px 4px 1px #e0e4ee;
-    background-color: var(--main-Color);
+    box-shadow: 1px 1px 4px  #ececec;
+    background-color: rgb(238, 238, 238);
+    height: 70px;
 }
 
 header .container {
@@ -41,8 +45,12 @@ header .container {
     padding-right: 20px;
 }
 
-.container h1 {
+.container .web-title {
     padding-top: 0;
+    font-family: "Pacifico", cursive;
+    /* font-family: "Silkscreen", sans-serif; */
+    /* font-family: "Alata", sans-serif; */
+    font-size: 30px;
 }
 
 @media (min-width:992px) {
@@ -50,7 +58,7 @@ header .container {
         width: 960px;
     }
 
-    .links li::before {
+    .route::before {
         content: '';
         width: 0px;
         position: absolute;
@@ -97,29 +105,30 @@ header .container {
 header .user {
     position: relative;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: red; */
     height: 33px;
-padding-top: 1px
+    padding-top: 1px;
     
 }
 
 .user p {
     position: relative;
-    top: -12px;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 header .user ul {
     position: absolute;
     left: -53.78px;
     top: calc(100% + -3px);
-    background-color: var(--main-Color);
+    background-color: white;
     padding: 0px;
     text-align: left;
     display: none;
     border-radius: 10px;
     min-width: 150px;
-
-    box-shadow: 0px 3px 5px 3px #b6c9f7;
+    box-shadow: 1px 1px 6px rgb(187, 187, 187,.4);
 }
 
 
@@ -147,10 +156,10 @@ header .user ul::before {
     content: "";
     border-width: 10px;
     border-style: solid;
-    border-color: transparent transparent red transparent;
+    border-color: transparent transparent rgb(255, 255, 255) transparent;
     position: absolute;
-    right: 71px;
-    top: -12px;
+    right: 69px;
+    /* top: -12px; */
     top: -20px;
 
 
@@ -158,20 +167,24 @@ header .user ul::before {
 
 .user ul li .logout {
     display: block;
-    padding: 11px;
+    padding: 10px;
     margin-bottom: 2px;
     transition: 0.3s;
     background-color: transparent;
     border: 0;
     cursor: pointer;
+    text-align: center;
+    /* background-color: red; */
 }
-
-.user ul li .logout:hover {
-    padding-left: 25px;
+.logout:hover{
+    color: rgb(226, 44, 44);
 }
-
 .user ul li {
     margin: 0px;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    padding-left: 10px;
 }
 
 
@@ -282,4 +295,18 @@ header .user ul::before {
         top: -10px;
     }
 
+}
+.route{
+    /* background-color: red; */
+    height: 70px;
+    /* text-align: center; */
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    /* padding: 5px; */
+    border-bottom: 3px solid transparent;
+    transition: .2s ease all ;
+}
+.active{
+    border-bottom: 3px solid rgb(139, 169, 224);
 }
