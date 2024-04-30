@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import Stack from '@mui/material/Stack';
+import { FaPen } from "react-icons/fa";
 axios.defaults.withCredentials = true
-function SupervisorsRequests() {
+function RequestsRequests() {
     const navigate = useNavigate();
     const [Requests, getRequests] = useState([]);
     const [reload, setreload] = useState(0);
@@ -44,12 +46,43 @@ function SupervisorsRequests() {
             })
             .catch(err => console.log("msh sh8ala", err))
     }
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 5;
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const records = Requests.slice(firstIndex, lastIndex)
+    const nPage = Math.ceil(Requests.length / recordsPerPage)
+    const numbers = [...Array(nPage + 1).keys()].slice(1)
+    const prePage = () => {
+        if (currentPage !== firstIndex) {
+        setCurrentPage(currentPage - 1)
+    }
+}
+    const nextPage = () => {
+        if (currentPage !== lastIndex) {
+        setCurrentPage(currentPage + 1)
+        }
+    }
+    const changeCPage = (id) => {
+        setCurrentPage(id)
+    }
     return (
         <section>
             <div className="page-name">
-                <h2>Supervisors Requests</h2>
-                {/* <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus
-                </p> */}
+                <Stack spacing={70} direction='row'>
+                    <div className='leftside'>
+                        <Stack spacing={5} direction='row' className='header-container'>
+                            <div className='page-title'>Requests Management</div>
+                            <div>
+                                <Stack direction='row' spacing={2}>
+                                    <div className='count'><FaPen /></div>
+                                    <div className='count'>{Requests.length} Requests</div>
+                                </Stack>
+                            </div>
+                        </Stack>
+                    </div>
+                    {/* <div className="add rightside"><button className="button" onClick={showform}>Add</button></div> */}
+                </Stack>
             </div>
             <div className="table-container">
                 <table>
@@ -91,4 +124,4 @@ function SupervisorsRequests() {
     );
 }
 
-export default SupervisorsRequests
+export default RequestsRequests

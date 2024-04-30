@@ -1,6 +1,11 @@
 const CryptoJS = require("crypto-js");
 
-const key = 'Network-Security-Project-Senior'
+const key = 'Network-Security-Project-Senior';
+
+
+
+//login
+//supervisor management(add supervisor,update supervisor)
 
 exports.encryptData = (plainText) => {
     const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(plainText), key).toString();
