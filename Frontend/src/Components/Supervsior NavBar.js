@@ -7,20 +7,21 @@ function SupervisorNavBar() {
     const navigate = useNavigate();
     function Logout() {
         axios.put('http://localhost:4000/Authentication', {
-            params: {
-                Token: Cookies.get('Token'),
-            }
+            // params: {
+            //     Token: Cookies.get('Token'),
+            // }
+            Token: Cookies.get('Token')
         })
             .then(res => {
-                console.log(res)
+                console.log(Cookies.get());
                 Cookies.remove('Name');
                 Cookies.remove('Token');
+                Cookies.remove("'connect.sid'");
                 navigate("/");
             })
             .catch(err => console.log("msh sh8ala", err))
-
+        
     }
-
     return (
         <header>
             <nav className="container">
