@@ -3,7 +3,10 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import { FaPen } from "react-icons/fa";
+import Empty from "../Empty";
+
 axios.defaults.withCredentials = true
+
 function RequestsRequests() {
     const navigate = useNavigate();
     const [Requests, getRequests] = useState([]);
@@ -84,41 +87,46 @@ function RequestsRequests() {
                     {/* <div className="add rightside"><button className="button" onClick={showform}>Add</button></div> */}
                 </Stack>
             </div>
-            <div className="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Supervisor Name </th>
-                            <th>Warehouse </th>
-                            <th>Product Name</th>
-                            <th>Stock</th>
-                            <th>Requested Quantity</th>
-                            <th>Decision</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            Requests.map((data, i) => {
-                                return (
-                                    <tr>
-                                        <td>{data.SName}</td>
-                                        <td>{data.WName}</td>
-                                        <td>{data.PName}</td>
-                                        <td>{data.Stock}</td>
-                                        <td>{data.Quantity}</td>
-                                        <td>
-                                            <div className="buttons"><button className="button" onClick={() => { Accept(data.RID) }}> Accept </button>
-                                                <button className="button" id="Delete" onClick={() => { Decline(data.RID) }}> Decline </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        }
+            {
+                Requests.length ? 
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Supervisor Name </th>
+                                    <th>Warehouse </th>
+                                    <th>Product Name</th>
+                                    <th>Stock</th>
+                                    <th>Requested Quantity</th>
+                                    <th>Decision</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    Requests.map((data, i) => {
+                                        return (
+                                            <tr>
+                                                <td>{data.SName}</td>
+                                                <td>{data.WName}</td>
+                                                <td>{data.PName}</td>
+                                                <td>{data.Stock}</td>
+                                                <td>{data.Quantity}</td>
+                                                <td>
+                                                    <div className="buttons"><button className="button" onClick={() => { Accept(data.RID) }}> Accept </button>
+                                                        <button className="button" id="Delete" onClick={() => { Decline(data.RID) }}> Decline </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                }
 
-                    </tbody>
-                </table>
-            </div>
+                            </tbody>
+                        </table>
+                    </div>
+                    :
+                    <Empty />
+            }
         </section>
 
     );

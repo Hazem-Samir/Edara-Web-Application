@@ -1,7 +1,7 @@
 const CryptoJS = require("crypto-js");
 
 // 32-characters-key
-exports.key = 'Network-Security-Project-Senior'
+const key = 'Network-Security-Project-Senior';
 //authentication(login)
 //supervisors(post,put)req
 //AES => Advanced Encryption Standard
