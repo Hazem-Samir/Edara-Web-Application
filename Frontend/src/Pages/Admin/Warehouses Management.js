@@ -2,34 +2,44 @@ import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { closeform, closeupdateform, showform, updateform } from '../../JS/main';
 import { Link, useNavigate } from "react-router-dom";
+import { FaPen } from "react-icons/fa";
+import Stack from '@mui/material/Stack';
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaPlus } from "react-icons/fa6";
+import Empty from '../Empty';
+
 axios.defaults.withCredentials = true
 let wid;
 
 function WarehousesManagement() {
-
-    const navigate = useNavigate();
-    function AddWarehouse() {
-        axios.get("http://localhost:4000/supervisors")
-            .then(res => getsupervisors(res.data))
-            .catch(console.log("fail"))
-        showform()
-    }
-
-    function DeleteWarehouse(WID) {
-        axios.delete(`http://localhost:4000/warehouses/${WID}`)
-            .then(res => {console.log(res)
-                // window.location.reload(false);
-                setreload(!reload);
-})
-            .catch(err => console.log("msh sh8ala", err))
-    }
-
+    const [open, setOpen] = useState(false);
 
     const [Name, setName] = useState("");
     const [Location, setLocation] = useState("");
     const [warehouses, getwarehouses] = useState([]);
     const [supervisors, getsupervisors] = useState([]);
     const [reload, setreload] = useState(0);
+    const navigate = useNavigate();
+    function AddWarehouse() {
+        setOpenModal(true);
+        axios.get("http://localhost:4000/supervisors")
+            .then(res => getsupervisors(res.data))
+            .catch(console.log("fail"))
+    }
+    function DeleteWarehouse(WID,msg,svrt) {
+        axios.delete(`http://localhost:4000/warehouses/${WID}`)
+            .then(res => {console.log(res)
+                // window.location.reload(false);
+                setreload(!reload);
+})
+            .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg, svrt);
+    }
 
     function UpdateWarehouse(WID) {
         axios.get("http://localhost:4000/supervisors")
@@ -41,13 +51,12 @@ function WarehousesManagement() {
         updateform();
     }
 
-    function UpdateData() {
+    function UpdateData(msg,svrt) {
         var select = document.querySelector('#updateSelection');
         var value = select.options[select.selectedIndex].value;
         console.log(value);
         console.log(wid);
         axios.put('http://localhost:4000/warehouses', {
-           
                 WID: wid,
                 Name: Name,
                 Location: Location,
@@ -62,14 +71,15 @@ function WarehousesManagement() {
                 setLocation("");
 })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
     }
-
-    function DeleteAll(){
+    function DeleteAll(msg,svrt){
         axios.delete(`http://localhost:4000/warehouses/`)
             .then(res => {console.log(res);
                 window.location.reload(false);
-})
+            })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
     }
     useEffect(() => {
         axios.get("http://localhost:4000/warehouses")
@@ -78,7 +88,8 @@ function WarehousesManagement() {
 
     }, [reload])
 
-    function InsertData() {
+    function InsertData(msg,svrt) {
+        handleCloseModal();
         var select = document.querySelector('#createSelection');
         var value = select.options[select.selectedIndex].value;
         axios.post("http://localhost:4000/warehouses", { warehouseName: Name, Location: Location, SID: value }, { withCredentials: true })
@@ -91,55 +102,175 @@ function WarehousesManagement() {
 
 })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
+        }
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 5;
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const records = warehouses.slice(firstIndex, lastIndex)
+    const nPage = Math.ceil(warehouses.length / recordsPerPage)
+    const numbers = [...Array(nPage + 1).keys()].slice(1)
+    const prePage = () => {
+        if (currentPage !== firstIndex) {
+        setCurrentPage(currentPage - 1)
+    }}
+    const nextPage = () => {
+        if (currentPage !== lastIndex) {
+        setCurrentPage(currentPage + 1)
+        }
     }
+    const changeCPage = (id) => {
+        setCurrentPage(id)
+    }
+    const handleCloseModal = () => {
+        setOpenModal(false);
+        
+    };
+    
+    const [updateFormData, setUpdateFormData] = useState({
+        Token: '',
+        Name: '',
+        Email: '',
+        Phone: '',
+        Password: ''
+    });
+
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+    const showMessage = (message,severity) => {
+        setOpen(true);
+        setSeverity(severity);
+        setMessage(message);
+    };
+    
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+    
+        setOpen(false);
+    };
+    const handleCloseUpdateModal = () => {
+        setOpenUpdate(false);
+        setUpdateFormData({
+            Token: '',
+            Name: '',
+            Email: '',
+            Phone: '',
+            Password: ''
+        });
+    };
+    
     return (
         <section>
             <div className="page-name">
-                <h2>Warehouse Managment</h2>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem similique aliquam mollitia necessitatibus</p>
+                <Stack spacing={70} direction='row'>
+                    <div className='leftside'>
+                        <Stack spacing={5} direction='row' className='header-container'>
+                            <div className='page-title'>Warehouses Management</div>
+                            <div>
+                                <Stack direction='row' spacing={2}>
+                                    <div className='count'><FaPen /></div>
+                                    <div className='count'>{warehouses.length} warehouses</div>
+                                </Stack>
+                            </div>
+                            <Stack direction='row' spacing={2} className="add">
+                                <button className="button" onClick={() => { AddWarehouse() }} >
+                                    <Stack direction='row' spacing={1}>
+                                        <p><FaPlus/></p>
+                                        <p>add</p>
+                                    </Stack>
+                                </button>
+                                {
+                                    (warehouses.length>0) &&
+                                    <button className="button" onClick={() => { DeleteAll('all warehouses deleted successfully!', 'error') }} id="delall">
+                                        <Stack direction='row' spacing={1}>
+                                            {/* <p><RiDeleteBin6Line/></p> */}
+                                            <p>delete all</p>
+                                        </Stack>
+                                    </button>
+                                }
+                            </Stack>
+                        </Stack>
+                    </div>
+                </Stack>
             </div>
-           
-            <table>
+            {
+                warehouses.length > 0 ?
+                    <div className='table-container'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Supervisor</th>
+                                    <th>PRODUCTS</th>
+                                    <th >Edit Info</th>
 
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Supervisor</th>
-                        <th>PRODUCTS</th>
-                        <th >Edit Info</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        warehouses.map((data, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td>{data.WHName}</td>
-                                    <td>{data.Location}</td>
-                                    <td>{data.Status ? "Active" : "In-Active"}</td>
-                                    <td>{data.Name}</td>
-                                    <td><div className="buttons"><Link to={`/A/Warehouse/${data.ID}/products`} className='Productbutton'><i  aria-hidden="true"></i>Products</Link></div></td>
-                                    <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data.ID) }}>Update</button>
-                                        <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID) }} >Delete</button>
-                                    </div>
-                                    </td>
                                 </tr>
-                            );
-                        })
-                    }
-                </tbody>
-            </table>
-            <div className="add"><button className="button" onClick={() => { AddWarehouse() }} >Add</button>
-                <button className="button" onClick={()=>{DeleteAll()}} id="delall">delete all</button></div>
+                            </thead>
+                            <tbody>
+                                {
+                                    records.map((data, i) => {
+                                        return (
+                                            <tr key={i}>
+                                                <td>{data.WHName}</td>
+                                                <td>{data.Location}</td>
+                                                <td>{data.Status ? "Active" : "In-Active"}</td>
+                                                <td>{data.Name}</td>
+                                                <td><div className="buttons"><Link to={`/A/Warehouse/${data.ID}/products`} className='Productbutton'><i  aria-hidden="true"></i>Products</Link></div></td>
+                                                <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data.ID) }}>Update</button>
+                                                    <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID,'warehouse deleted successfully!','error') }} >Delete</button>
+                                                </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        <nav>
+                            <ul className="pagination-bar">
+                                <li>
+                                <button onClick={prePage} className="arrow">
+                                    <IoIosArrowBack />
+                                </button>
+                                </li>
+                                {
+                                numbers.map((n, i) => (
+                                    <li key={i} className={`page-item-bar ${currentPage===n? 'activate' : ''}`}>
+                                    <button onClick={() => changeCPage(n)} className="page-btn">{n}</button>
+                                    </li>
+                                ))
+                                }
+                                <li>
+                                <button onClick={nextPage} className="arrow">
+                                    <IoIosArrowForward />
+                                </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    :
+                    <Empty />
+            }
+            
 
-            <div style={{ display: "none" }} id="form" className="form" >
+            <div style={{ display: openModal? 'block' : 'none' }} id="form" className="form" >
                 <div className="form">
                     <div className="overlay">
                         <div className="container">
-                            <h3>Add Warehouse</h3>
+                        <Stack direction='row' spacing={30} pt={3}>
+                                <h3 style={{paddingLeft: '280px',paddingBottom:'18px'}}>Add Warehouse</h3>
+                                <div className='close-btn' onClick={handleCloseModal}>
+                                    <IoClose />
+                                </div>
+
+                            </Stack>
                             <div className="form">
                                 <input placeholder="Name" type="text" value={Name} onChange={(e) => { setName(e.target.value) }} id="name" />
                                 <input placeholder="Location" type="text" value={Location} onChange={(e) => { setLocation(e.target.value) }} id="location" />
@@ -153,7 +284,7 @@ function WarehousesManagement() {
                                         })
                                     }
                                 </select>
-                                <button className="button" onClick={()=>{InsertData()}} id="create">Add Warehouse</button>
+                                <button className="button" onClick={()=>{InsertData('warehouse added successfully!','success')}} id="create">Add Warehouse</button>
                             </div></div></div></div>
             </div>
 
@@ -180,13 +311,22 @@ function WarehousesManagement() {
                                     }
                                 </select>
 
-                                <button className="button" onClick={()=>{UpdateData();}} id="create">Update Warehouse</button>
+                                <button className="button" onClick={()=>{UpdateData('warehouse updated successfully!','success')}} id="create">Update Warehouse</button>
                             </div>
 
                         </div></div></div>
                         
             </div>
-
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert
+                onClose={handleClose}
+                severity={severity}
+                variant="filled"
+                sx={{ width: '100%' }}
+                >
+                {message}
+                </Alert>
+            </Snackbar>
 
         </section >
 

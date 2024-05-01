@@ -7,7 +7,9 @@ const util = require("util");
 const bcrypt = require("bcrypt");
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { decryptData, encryptData, handleData, key } = require('./BackendEncryption');
+const { decryptData, encryptData, handleData } = require('./BackendEncryption');
+
+const key = 'Network-Security-Project-Senior';
 
 
 

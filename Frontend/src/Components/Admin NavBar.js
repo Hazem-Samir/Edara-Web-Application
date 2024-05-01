@@ -4,7 +4,9 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Avatar from '@mui/material/Avatar';
-import {deepOrange} from '@mui/material/colors';
+import { deepOrange } from '@mui/material/colors';
+import { IoLogOutOutline } from "react-icons/io5";
+
 import logo from '../idea.png';
 function AdminNavBar() {
     const navigate = useNavigate();
@@ -78,12 +80,15 @@ function AdminNavBar() {
                 </div>
                 <div className="user">
                     {/* <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>  */}
-                    <Avatar sx={{ width: 35, height: 35 }}   alt={Cookies.get('Name')} src="/static/images/avatar/1.jpg" />
-
-                    <p className="user-profile">Hello, {Cookies.get('Name')} </p>
-                    <ul>
-                        <li><button className="logout" onClick={() => { Logout(); }}><i className="fa fa-sign-out" aria-hidden="true"></i> Logout</button></li>
-                    </ul>
+                    {/* <Avatar sx={{ width: 35, height: 35 }}   alt={Cookies.get('Name')} src="/static/images/avatar/1.jpg" /> */}
+                    {/* <ul> */}
+                        {/* <li><button className="logout" onClick={() => { Logout(); }}><i className="fa fa-sign-out" aria-hidden="true"></i> Logout</button></li> */}
+                    {/* 
+                    </ul> */}
+                    <p style={{paddingRight:'10px'}}>Hello, {Cookies.get('Name')} </p>
+                    <div onClick={()=>Logout()} className="logout-icon">
+                        <IoLogOutOutline/>
+                    </div>
                 </div>
             </nav>
         </header >

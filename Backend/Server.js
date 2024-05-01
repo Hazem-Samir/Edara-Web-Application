@@ -4,7 +4,7 @@ const cors = require('cors');
 const server = express();
 const PORT = 4000;
 const session = require('express-session');
-const key = 'Network Security';
+const key = 'Network-Security-Project-Senior';
 // ====================== Global Middleware ======================
 const corsOptions ={
     origin:'http://localhost:3000', 

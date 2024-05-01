@@ -5,7 +5,12 @@ import { useEffect, useState } from 'react';
 import { closeform, closeupdateform, incorrect, showform, updateform } from '../../JS/main';
 import { useNavigate, useParams } from 'react-router-dom';
 import Stack from "@mui/material/Stack";
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaPlus } from 'react-icons/fa';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import Empty from '../Empty';
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 axios.defaults.withCredentials = true
 let pid;
 let Photo;
@@ -21,7 +26,7 @@ function Products() {
         showform()
     }
 
-    function DeleteProduct(PID) {
+    function DeleteProduct(PID ,msg,svrt) {
         axios.delete(`http://localhost:4000/Products/${PID}`)
             .then(res => {
                 incorrect(res.data);
@@ -30,6 +35,7 @@ function Products() {
                 // window.location.reload(false);
             })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
     }
 
     function change(e) {
@@ -44,7 +50,7 @@ function Products() {
         updateform();
     }
     const [reload, setreload] = useState(0);
-    function UpdateData() {
+    function UpdateData(msg,svrt) {
         console.log(pid);
         const formData = new FormData();
         formData.append("Name", Name);
@@ -66,9 +72,10 @@ function Products() {
                 setreload(!reload);
             })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
     }
 
-    function DeleteAll() {
+    function DeleteAll(msg,svrt) {
         axios.delete(`http://localhost:4000/Products/`)
             .then(res => {
                 console.log(res);
@@ -77,6 +84,7 @@ function Products() {
                 // window.location.reload(false);
             })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
     }
     useEffect(() => {
         axios.get(`http://localhost:4000/Products/${wid}`)
@@ -84,7 +92,7 @@ function Products() {
             .catch(err => navigate("/"))
     }, [reload])
 
-    function InsertData() {
+    function InsertData(msg,svrt) {
 
         const formData = new FormData();
         formData.append("Name", Name);
@@ -106,6 +114,7 @@ function Products() {
                 // window.location.reload(false);
             })
             .catch(err => console.log("msh sh8ala", err))
+        showMessage(msg,svrt)
     }
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
@@ -127,28 +136,59 @@ function Products() {
     const changeCPage = (id) => {
         setCurrentPage(id)
     }
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+    const showMessage = (message,severity) => {
+        setOpen(true);
+        setSeverity(severity);
+        setMessage(message);
+    };
+    
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+    
+        setOpen(false);
+    };
     return (
         <section>
             <div className="page-name">
                 <Stack spacing={70} direction='row'>
                     <div className='leftside'>
                         <Stack spacing={5} direction='row' className='header-container'>
-                            <div className='page-title'>products Management</div>
+                            <div className='page-title'>Products Management</div>
                             <div>
                                 <Stack direction='row' spacing={2}>
                                     <div className='count'><FaPen /></div>
                                     <div className='count'>{products.length} products</div>
                                 </Stack>
                             </div>
+                            <Stack direction='row' spacing={2} className="add">
+                                <button className="button" onClick={() => { AddProducts() }} >
+                                    <Stack direction='row' spacing={1}>
+                                        <p><FaPlus/></p>
+                                        <p>add</p>
+                                    </Stack>
+                                </button>
+                                {
+                                    (products.length>0) &&
+                                    <button className="button" onClick={() => { DeleteAll('all products deleted successfully!', 'error') }} id="delall">
+                                        <Stack direction='row' spacing={1}>
+                                            <p>delete all</p>
+                                        </Stack>
+                                    </button>
+                                }
+                            </Stack>
                         </Stack>
                     </div>
-                    <div className="add rightside"><button className="button" onClick={showform}>Add</button></div>
                 </Stack>
             </div>
-            import { FaPen } from 'react-icons/fa';
-            <div className='table-container'>
+            {
+                products.length > 0 ?
+                <div className='table-container'>
                 <table>
-
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -163,7 +203,7 @@ function Products() {
                     </thead>
                     <tbody>
                         {
-                            products.map((data, i) => {
+                            records.map((data, i) => {
                                 let photo_url = `http://localhost:4000/${data.Photo}`;
                                 return (
                                     <tr key={i}>
@@ -175,7 +215,7 @@ function Products() {
                                         <td>{data.Name}</td>
 
                                         <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { UpdateProducts(data.ID) }}>Update</button>
-                                            <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteProduct(data.ID) }} >Delete</button>
+                                            <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteProduct(data.ID,'product deleted successfully!','error') }} >Delete</button>
                                         </div>
                                         </td>
                                     </tr>
@@ -184,10 +224,31 @@ function Products() {
                         }
                     </tbody>
                 </table>
-            </div>
-            <div className="add"><button className="button" onClick={() => { AddProducts() }} >Add</button>
-                <button className="button" onClick={() => { DeleteAll() }} id="delall">delete all</button></div>
-
+                <nav>
+                            <ul className="pagination-bar">
+                                <li>
+                                <button onClick={prePage} className="arrow">
+                                    <IoIosArrowBack />
+                                </button>
+                                </li>
+                                {
+                                numbers.map((n, i) => (
+                                    <li key={i} className={`page-item-bar ${currentPage===n? 'activate' : ''}`}>
+                                    <button onClick={() => changeCPage(n)} className="page-btn">{n}</button>
+                                    </li>
+                                ))
+                                }
+                                <li>
+                                <button onClick={nextPage} className="arrow">
+                                    <IoIosArrowForward />
+                                </button>
+                                </li>
+                            </ul>
+                        </nav>
+                </div>
+                :
+                <Empty/>
+            }
             <div style={{ display: "none" }} id="form" className="form" >
                 <div className="form">
                     <div className="overlay">
@@ -199,7 +260,7 @@ function Products() {
                                 <input type="file" id='Photo' onChange={change} />
                                 <input placeholder="Stock" type="text" value={Stock} onChange={(e) => { setStocks(e.target.value) }} id="Stock" />
 
-                                <button className="button" onClick={() => { InsertData() }} id="create">Add Product</button>
+                                <button className="button" onClick={() => { InsertData('product added successfully!','success') }} id="create">Add Product</button>
                             </div></div></div></div>
             </div>
 
@@ -217,14 +278,23 @@ function Products() {
                                 <input type="file" id='Photo' onChange={change} />
                                 <input placeholder="Stock" type="text" value={Stock} onChange={(e) => { setStocks(e.target.value) }} id="Stock" />
 
-                                <button className="button" onClick={() => { UpdateData(); }} id="create">Update Product</button>
+                                <button className="button" onClick={() => { UpdateData('product updated successfully!','success') }} id="create">Update Product</button>
                             </div>
 
                         </div></div></div>
 
             </div>
 
-
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert
+                onClose={handleClose}
+                severity={severity}
+                variant="filled"
+                sx={{ width: '100%' }}
+                >
+                {message}
+                </Alert>
+            </Snackbar>
         </section >
 
     );

@@ -2,8 +2,7 @@
 const conn = require('../../DB/Connection')
 const util = require("util");
 const jwt = require('jsonwebtoken');
-const { key } = require('../Authentication/BackendEncryption');
-
+const key = 'Network-Security-Project-Senior';
 // router.use(cookieParser());
 
 
