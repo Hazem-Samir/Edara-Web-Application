@@ -17,10 +17,18 @@ axios.defaults.withCredentials = true
 let wid;
 
 function WarehousesManagement() {
+    const [updateFormData, setUpdateFormData] = useState({
+        WID: 0,
+        Name: '',
+        Location: '',
+
+    });
+    const [addFormData, setAddFormData] = useState({
+        Name: '',
+        Location: '',
+    });
     const [open, setOpen] = useState(false);
 
-    const [Name, setName] = useState("");
-    const [Location, setLocation] = useState("");
     const [warehouses, getwarehouses] = useState([]);
     const [supervisors, getsupervisors] = useState([]);
     const [reload, setreload] = useState(0);
@@ -41,13 +49,18 @@ function WarehousesManagement() {
         showMessage(msg, svrt);
     }
 
-    function UpdateWarehouse(WID) {
+    function UpdateWarehouse(data) {
+        setUpdateFormData({
+            WID:data.ID,
+            Name:data.Name,
+            Location:data.Location
+        })
         axios.get("http://localhost:4000/supervisors")
             .then(res => {getsupervisors(res.data);
             })
             .catch(console.log("fail"))
-        wid = WID;
-        console.log(wid);
+        // wid = WID;
+        // console.log(wid);
         updateform();
     }
 
@@ -55,20 +68,21 @@ function WarehousesManagement() {
         var select = document.querySelector('#updateSelection');
         var value = select.options[select.selectedIndex].value;
         console.log(value);
-        console.log(wid);
+        // console.log(wid);
         axios.put('http://localhost:4000/warehouses', {
-                WID: wid,
-                Name: Name,
-                Location: Location,
+                WID: updateFormData.WID,
+                Name: updateFormData.Name,
+                Location: updateFormData.Location,
                 SID: value
             
         })
             .then(res => {console.log(res);
+             
                 // window.location.reload(false);
                 closeupdateform();
                 setreload(!reload);
-                setName("");
-                setLocation("");
+              
+                setUpdateFormData({Name:'',Location:'',WID:0})
 })
             .catch(err => console.log("msh sh8ala", err))
         showMessage(msg,svrt)
@@ -92,13 +106,12 @@ function WarehousesManagement() {
         handleCloseModal();
         var select = document.querySelector('#createSelection');
         var value = select.options[select.selectedIndex].value;
-        axios.post("http://localhost:4000/warehouses", { warehouseName: Name, Location: Location, SID: value }, { withCredentials: true })
+        axios.post("http://localhost:4000/warehouses", { warehouseName: addFormData.Name, Location: addFormData.Location, SID: value }, { withCredentials: true })
             .then(res => {console.log(res);
                 // window.location.reload(false);
                 closeform();
                 setreload(!reload);
-                setName("");
-                setLocation("");
+               setAddFormData({Name:'',Location:''})
 
 })
             .catch(err => console.log("msh sh8ala", err))
@@ -128,13 +141,7 @@ function WarehousesManagement() {
         
     };
     
-    const [updateFormData, setUpdateFormData] = useState({
-        Token: '',
-        Name: '',
-        Email: '',
-        Phone: '',
-        Password: ''
-    });
+
 
     const [openUpdate, setOpenUpdate] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -156,11 +163,9 @@ function WarehousesManagement() {
     const handleCloseUpdateModal = () => {
         setOpenUpdate(false);
         setUpdateFormData({
-            Token: '',
+            WID: 0,
             Name: '',
-            Email: '',
-            Phone: '',
-            Password: ''
+            Location: '',
         });
     };
     
@@ -223,7 +228,7 @@ function WarehousesManagement() {
                                                 <td>{data.Status ? "Active" : "In-Active"}</td>
                                                 <td>{data.Name}</td>
                                                 <td><div className="buttons"><Link to={`/A/Warehouse/${data.ID}/products`} className='Productbutton'><i  aria-hidden="true"></i>Products</Link></div></td>
-                                                <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data.ID) }}>Update</button>
+                                                <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data) }}>Update</button>
                                                     <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID,'warehouse deleted successfully!','error') }} >Delete</button>
                                                 </div>
                                                 </td>
@@ -272,8 +277,8 @@ function WarehousesManagement() {
 
                             </Stack>
                             <div className="form">
-                                <input placeholder="Name" type="text" value={Name} onChange={(e) => { setName(e.target.value) }} id="name" />
-                                <input placeholder="Location" type="text" value={Location} onChange={(e) => { setLocation(e.target.value) }} id="location" />
+                                <input placeholder="Name" type="text"  onChange={(e) => { setAddFormData({...addFormData,Name:e.target.value}) }} id="name" />
+                                <input placeholder="Location" type="text"  onChange={(e) => {  setAddFormData({...addFormData,Location:e.target.value}) }} id="location" />
                                 <select id="createSelection" className="selection">
                                     {
 
@@ -298,8 +303,8 @@ function WarehousesManagement() {
                             <div className="form">
 
                                 
-                                <input placeholder="Name" type="text" onChange={(e) => { setName(e.target.value) }} id="name" />
-                                <input placeholder="Location" type="text" onChange={(e) => { setLocation(e.target.value) }} id="location" />
+                                <input placeholder="Name" type="text" value={updateFormData.Name} onChange={(e) => {setUpdateFormData( {...updateFormData,Name:e.target.value}) }} id="name" />
+                                <input placeholder="Location" type="text"value={updateFormData.Location} onChange={(e) => { setUpdateFormData( {...updateFormData,Location:e.target.value}) }} id="location" />
                                 <select id="updateSelection" className="selection">
                                     {
 

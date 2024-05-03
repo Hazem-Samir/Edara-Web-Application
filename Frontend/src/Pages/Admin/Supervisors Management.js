@@ -36,7 +36,7 @@ function SupervisorsManagement() {
         Token: '',
         Name: '',
         Email: '',
-        Phone: '',
+        Phone: 0,
         Password: ''
     });
     
@@ -116,7 +116,7 @@ function SupervisorsManagement() {
             Name: Data.Name,
             Email: Data.Email,
             Phone: Data.Phone,
-            Password: ''
+            Password:''
         });
         console.log(updateFormData);
         updateform();

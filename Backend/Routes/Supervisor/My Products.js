@@ -11,7 +11,7 @@ router.get("/:Token", supervisorAuthorize, (req, res) => {
         (err, result) => {
             if (err) console.log(res.json("Erorr"));
 
-            const query2 = "SELECT products.ID as PID , products.Name , products.Description ,products.Photo ,products.Stock ,products.WID , user.ID as SID FROM `products` join warehouses on products.WID = warehouses.ID join user on warehouses.SID = user.ID WHERE user.ID=" + result[0].ID + ";"
+            const query2 = "SELECT products.ID as PID , products.Name ,warehouses.Name as WNAME, products.Description ,products.Photo ,products.Stock ,products.WID , user.ID as SID FROM `products` join warehouses on products.WID = warehouses.ID join user on warehouses.SID = user.ID WHERE user.ID=" + result[0].ID + ";"
             conn.query(query2,
                 (err, result, fields) => {
                     if (err) return (res.json("Erorr"));

@@ -29,21 +29,27 @@ const MyProducts = () => {
         setOpen(false);
     };
     function sendRequest(data,msg,svrt) {
-        axios.post("http://localhost:4000/my-products", {
-            SID: data.SID,
-            WID: data.WID,
-            PID: data.PID,
-            Quantity: data.Quantity
-
-        })
-            .then(res => {
-                console.log(res)
-                // window.location.reload(false);
-                setreload(!reload);
-
+        if(data.Quantity!=0){
+            axios.post("http://localhost:4000/my-products", {
+                SID: data.SID,
+                WID: data.WID,
+                PID: data.PID,
+                Quantity: data.Quantity
+    
             })
-            .catch(err => console.log(err))
-        showMessage(msg,svrt)
+                .then(res => {
+                    console.log(res)
+                    // window.location.reload(false);
+                    setreload(!reload);
+    
+                })
+                .catch(err => console.log(err))
+            showMessage(msg,svrt)
+        }
+        else {
+            showMessage('Set What Quantity Needed','error')
+        }
+      
     }
 
 
@@ -125,7 +131,8 @@ const MyProducts = () => {
                             <table >
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Warehouse</th>
+                                        <th>Product Name</th>
                                         <th>Description</th>
                                         <th>Photo</th>
                                         <th>Stock</th>
@@ -138,6 +145,7 @@ const MyProducts = () => {
                                         let photo_url = `http://localhost:4000/${item.Photo}`;
                                         return (
                                             <tr key={item.PID}>
+                                                <td>{item.WNAME}</td>
                                                 <td>{item.Name}</td>
                                                 <td>{item.Description}</td>
                                                 <td><img alt="ProductPhoto" src={photo_url} /></td>
