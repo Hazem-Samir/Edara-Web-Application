@@ -1,11 +1,22 @@
-version: "3.2"
+version: "3.9"
 
 volumes:
   Backend_node_modules:
     driver: local
+  authservice_node_modules:
+    driver: local
+  supervisorservice_node_modules:
+    driver: local
+
   Frontend_node_modules:
     driver: local
-  mysqldata:
+  usermysqldata:
+    driver: local
+  warehousemysqldata:
+    driver: local
+  productmysqldata:
+    driver: local
+  requestmysqldata:
     driver: local
 
 networks:
@@ -14,31 +25,81 @@ networks:
     driver: bridge
 
 services:
-  backend:
-    build: ./Backend/
-    container_name: backend
+  # backend:
+  #   build: ./Backend/
+  #   container_name: backend
+  #   ports:
+  #     - "4000:4000"
+  #   volumes:
+  #     - ./Backend:/app
+  #     - Backend_node_modules:/app/node_modules
+  #   depends_on:
+  #     - db
+  #   restart: on-failure
+  #   networks:
+  #     - mysql-phpmyadmin
+  #   environment:
+  #     MYSQL_HOST: db
+  #     MYSQL_USER: admin
+  #     MYSQL_PASS: 'admin'
+  #     MYSQL_DB: edara
+  #     MYSQL_PORT: 3306
+  authservice:
+    build: ./AuthService/
+    container_name: authservice
     ports:
       - "4000:4000"
     volumes:
-      - ./Backend:/app
-      - Backend_node_modules:/app/node_modules
+      - ./AuthService:/app
+      - authservice_node_modules:/app/node_modules
     depends_on:
-      - db
+      - userdb
     restart: on-failure
     networks:
       - mysql-phpmyadmin
     environment:
-      MYSQL_HOST: db
+      MYSQL_HOST: userdb
+      MYSQL_USER: admin
+      MYSQL_PASS: admin
+      MYSQL_DB: userdb
+      MYSQL_PORT: 3306
+  
+  
+  supervisorservice:
+    build: ./SupervisorService/
+    container_name: supervisorservice
+    ports:
+      - "4001:4000"
+    volumes:
+      - ./SupervisorService:/app
+      - supervisorservice_node_modules:/app/node_modules
+    depends_on:
+      - userdb
+    restart: on-failure
+    networks:
+      - mysql-phpmyadmin
+    environment:
+      MYSQL_HOST_SUPERVISOR: userdb
+      MYSQL_HOST_WAREHOUSE: warehousedb
+      MYSQL_HOST_REQUEST: requestdb
+      MYSQL_HOST_PRODUCT : productdb
       MYSQL_USER: admin
       MYSQL_PASS: 'admin'
-      MYSQL_DB: edara
+      MYSQL_DB_SUPERVISOR: userdb
+      MYSQL_DB_WAREHOUSE: warehousedb
+      MYSQL_DB_REQUEST: requestdb
+      MYSQL_DB_PRODUCT : productdb
       MYSQL_PORT: 3306
-  db:
+  
+
+
+  
+  userdb:
     image: mysql
-    container_name: db
+    container_name: userdb
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: edara
+      MYSQL_DATABASE: userdb
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
     ports:
@@ -46,28 +107,140 @@ services:
     expose:
       - 3306
     volumes:
-      - mysqldata:/var/lib/mysql
+      - usermysqldata:/var/lib/mysql
     networks:
       - mysql-phpmyadmin
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin
+  
+  warehousedb:
+    image: mysql
+    container_name: warehousedb
     environment:
-      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: warehousedb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3307:3306"
+    expose:
+      - 3306
+    volumes:
+      - warehousemysqldata:/var/lib/mysql
+    networks:
+      - mysql-phpmyadmin
+  
+  productdb:
+    image: mysql
+    container_name: productdb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: productdb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3308:3306"
+    expose:
+      - 3306
+    volumes:
+      - productmysqldata:/var/lib/mysql
+    networks:
+      - mysql-phpmyadmin
+  
+  requestdb:
+    image: mysql
+    container_name: requestdb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: requestdb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3309:3306"
+    expose:
+      - 3306
+    volumes:
+      - requestmysqldata:/var/lib/mysql
+    networks:
+      - mysql-phpmyadmin
+  
+  
+  
+  
+  
+  userphpmyadmin:
+    image: phpmyadmin
+    container_name: userphpmyadmin
+    environment:
+      PMA_HOST: userdb
       PMA_PORT: 3306
     ports:
       - 8081:80
     networks:
       - mysql-phpmyadmin
     depends_on:
-      - db
+      - userdb
     volumes:
       - /sessions
+  
+  
+ 
+  warehousephpmyadmin:
+    image: phpmyadmin
+    container_name: warehousephpmyadmin
+    environment:
+      PMA_HOST: warehousedb
+      PMA_PORT: 3307
+    ports:
+      - 8082:80
+    networks:
+      - mysql-phpmyadmin
+    depends_on:
+      - warehousedb
+    volumes:
+      - /sessions
+
+
+  productsphpmyadmin:
+    image: phpmyadmin
+    container_name: productsphpmyadmin
+    environment:
+      PMA_HOST: productdb
+      PMA_PORT: 3308
+    ports:
+      - 8083:80
+    networks:
+      - mysql-phpmyadmin
+    depends_on:
+      - productdb
+    volumes:
+      - /sessions
+  
+   
+  
+  requestphpmyadmin:
+    image: phpmyadmin
+    container_name: requestphpmyadmin
+    environment:
+      PMA_HOST: requestdb
+      PMA_PORT: 3309
+    ports:
+      - 8084:80
+    networks:
+      - mysql-phpmyadmin
+    depends_on:
+      - warehousedb
+    volumes:
+      - /sessions
+  
+  
+  
+  
+  
   frontend:
     build: ./Frontend/
     container_name: frontend
     depends_on:
-      - backend
+      - authservice
+      - supervisorservice
     ports:
       - "3000:3000"
     volumes:

@@ -30,7 +30,7 @@ const MyProducts = () => {
     };
     function sendRequest(data,msg,svrt) {
         if(data.Quantity!=0){
-            axios.post("http://localhost:4000/my-products", {
+            axios.post("http://localhost:4001/my-products", {
                 SID: data.SID,
                 WID: data.WID,
                 PID: data.PID,
@@ -54,7 +54,7 @@ const MyProducts = () => {
 
 
     const loadData = async () => {
-        await axios.get(`http://localhost:4000/my-products/${Cookies.get('Token')}`)
+        await axios.get(`http://localhost:4001/my-products/${Cookies.get('Token')}`)
             .then(res => {
                 setData(res.data.map((item) => {
                     item["Quantity"] = 0;
@@ -142,7 +142,7 @@ const MyProducts = () => {
                                 </thead>
                                 <tbody>
                                     {records.map((item, index) => {
-                                        let photo_url = `http://localhost:4000/${item.Photo}`;
+                                        let photo_url = `http://localhost:4001/${item.Photo}`;
                                         return (
                                             <tr key={item.PID}>
                                                 <td>{item.WNAME}</td>

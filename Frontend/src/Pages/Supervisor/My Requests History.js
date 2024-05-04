@@ -36,7 +36,7 @@ function MyRequestsHistory() {
     useEffect(
         () => {
 
-            axios.get(`http://localhost:4000/my-requests-history/${Cookies.get('Token')}`)
+            axios.get(`http://localhost:4001/my-requests-history/${Cookies.get('Token')}`)
                 .then(res => setRequestsHistory(res.data))
                 .catch(err => navigate("/"));
         }, [])
@@ -97,7 +97,7 @@ function MyRequestsHistory() {
     
                             {
                                 records.map((data, i) => {
-                                    let photo_url = `http://localhost:4000/${data.Photo}`;
+                                    let photo_url = `http://localhost:4001/${data.Photo}`;
     
                                     return (
                                         <tr key={i}>
