@@ -47,10 +47,9 @@ router.post("/",handleData,
                 //initializing jwt
                 const token = jwt.sign({ token: user[0].Token, username: user[0].Name }, key, { expiresIn: '1h' });
                 await query("UPDATE `user` SET `Status` = '1' WHERE Token = '" + user[0].Token + "';");
-                //session
-                req.session.visited = true;
-                req.session.user = { token: user[0].Token, username: user[0].Name };
-                console.log(req.session.id);
+   
+
+
                 //encryption
                 console.log(encryptData({token:token , type:user[0].Type , name: user[0].Name}).length);
                 res.status(200).json(encryptData({token:token , type:user[0].Type , name: user[0].Name}));
@@ -74,7 +73,7 @@ router.put("/", (req, res) => {
             return (res.json(error));
         }
         else {
-            req.session.destroy();
+
             res.statusCode = 200;
             return (res.json("Logout"));
 

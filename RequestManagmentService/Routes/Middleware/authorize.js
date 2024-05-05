@@ -10,7 +10,7 @@ const key = 'Network-Security-Project-Senior';
 
 
 
-exports.supervisorAuthorize = async (req, res, next) => {
+exports.adminAuthorize = async (req, res, next) => {
     const Token = req.cookies.Token;
 
     if ( Token)
@@ -28,7 +28,7 @@ exports.supervisorAuthorize = async (req, res, next) => {
         });
         const user = await query("select * from user where Token = '" + req.user.token + "'");
 
-        if (user[0] && user[0].Type === "Supervisor") {
+        if (user[0] && user[0].Type === "Admin") {
             next();
         }
         else {

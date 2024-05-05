@@ -31,8 +31,8 @@ const MyProducts = () => {
     function sendRequest(data,msg,svrt) {
         if(data.Quantity!=0){
             axios.post("http://localhost:4001/my-products", {
-                SID: data.SID,
-                WID: data.WID,
+                SID: data.CID2,
+                WID: data.CID3,
                 PID: data.PID,
                 Quantity: data.Quantity
     
@@ -43,7 +43,7 @@ const MyProducts = () => {
                     setreload(!reload);
     
                 })
-                .catch(err => console.log(err))
+                .catch(err => showMessage('This Service is currently have problem try again later','error'))
             showMessage(msg,svrt)
         }
         else {
@@ -54,7 +54,7 @@ const MyProducts = () => {
 
 
     const loadData = async () => {
-        await axios.get(`http://localhost:4001/my-products/${Cookies.get('Token')}`)
+        await axios.get(`http://localhost:4001/my-products/`)
             .then(res => {
                 setData(res.data.map((item) => {
                     item["Quantity"] = 0;
@@ -145,7 +145,7 @@ const MyProducts = () => {
                                         let photo_url = `http://localhost:4001/${item.Photo}`;
                                         return (
                                             <tr key={item.PID}>
-                                                <td>{item.WNAME}</td>
+                                                <td>{item.WName}</td>
                                                 <td>{item.Name}</td>
                                                 <td>{item.Description}</td>
                                                 <td><img alt="ProductPhoto" src={photo_url} /></td>
@@ -155,7 +155,7 @@ const MyProducts = () => {
                                                     <div className="buttons">
                                                         <button className="button" onClick={() => handleDecrement(item.PID)} >-</button>
                                                         <button className="button" onClick={() => handleIncrement(item.PID)}>+</button>
-                                                        <button className="button" onClick={() => sendRequest(data[index],'request sent successfully!','success')}>Send Request</button>
+                                                        <button className="button" onClick={() => sendRequest(item,'request sent successfully!','success')}>Send Request</button>
                                                     </div>
                                                 </td>
                                             </tr>
