@@ -1,4 +1,4 @@
-version: '3'
+# version: '3'
 
 volumes:
   Backend_node_modules:
@@ -7,7 +7,7 @@ volumes:
     driver: local
   supervisorservice_node_modules:
     driver: local
-  requestmanagmentservice_node_modules:
+  requestmanagementservice_node_modules:
     driver: local
   Frontend_node_modules:
     driver: local
@@ -93,14 +93,14 @@ services:
       MYSQL_PORT: 3306
 
   
-  requestmanagmentservice:
-    build: ./RequestManagmentService/
-    container_name: requestmanagmentservice
+  requestmanagementservice:
+    build: ./RequestManagementService/
+    container_name: requestmanagementservice
     ports:
       - "4002:4000"
     volumes:
-      - ./RequestManagmentService:/app
-      - requestmanagmentservice_node_modules:/app/node_modules
+      - ./RequestManagementService:/app
+      - requestmanagementservice_node_modules:/app/node_modules
     depends_on:
       - userdb
     restart: on-failure
