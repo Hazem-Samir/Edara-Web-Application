@@ -35,7 +35,7 @@ router.get("/", supervisorAuthorize, (req, res) => {
                     console.error('Error executing userQuery:', err);
                     return res.json("Error");
                 }
-                const joinedResults = performJoin(userResult,warehouseResult, productResult);
+                const joinedResults = performJoin(userResult,warehouseResult, productResult,[]);
 
               res.status(200).json(joinedResults)
              

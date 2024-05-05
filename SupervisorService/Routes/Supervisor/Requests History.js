@@ -31,7 +31,7 @@ try{
                     console.error('Error executing userQuery:', err);
                     return res.json("Error");
                 }
-                const joinedResults = performJoin(userResult,requestResult, productResult);
+                const joinedResults = performJoin(userResult,requestResult, productResult,[]);
 
               res.status(200).json(joinedResults)
              

@@ -3,20 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const server = express();
 const PORT = 4000;
-const session = require('express-session');
-const key = 'Network-Security-Project-Senior';
 // ====================== Global Middleware ======================
 const corsOptions ={
     origin:'http://localhost:3000', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
-server.use(session({
-    secret: key,
-    saveUninitialized: false,        //doesn't create new session when moving among web pages.
-    resave: false,                  //doesn't increament old session payload to the new session payload.
-    cookie: {maxAge: 60*60*10000}  //expire date : 1hour 
-}));
+
 //
 server.use(cors(corsOptions));
 server.use(express.json());

@@ -13,7 +13,7 @@ function RequestsHistory() {
     const [requestsHistory, getrequestsHistory] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/requests-history/', { withCredentials: true})
+        axios.get('http://localhost:4002/requests-history/', { withCredentials: true})
             .then(res => {getrequestsHistory(res.data);
             })
             .catch(err => navigate("/"))
@@ -79,9 +79,9 @@ function RequestsHistory() {
                                         
                                         return (
                                             <tr key={i}>
-                                                <td>{data.SuperVisorName}</td>
-                                                <td>{data.WarehouseName}</td>
-                                                <td>{data.ProductName}</td>
+                                                <td>{data.SName}</td>
+                                                <td>{data.WName}</td>
+                                                <td>{data.PName}</td>
                                                 <td>{data.Quantity}</td>
                                                 <td>{data.State}</td>
                                             </tr>

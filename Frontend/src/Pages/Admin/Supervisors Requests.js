@@ -13,14 +13,16 @@ function RequestsRequests() {
     const [reload, setreload] = useState(0);
 
     useEffect(() => {
-        axios.get("http://localhost:4000/requests")
-            .then(res => getRequests(res.data))
+        axios.get("http://localhost:4002/requests")
+            .then(res => {console.log(res.data)
+                getRequests(res.data)})
             .catch(err => navigate("/"))
 
     }, [reload])
 
     function Accept(RID) {
-        axios.put('http://localhost:4000/requests/accept', {
+        console.log(RID)
+        axios.put('http://localhost:4002/requests/accept', {
 
             RID: RID
 
@@ -36,7 +38,7 @@ function RequestsRequests() {
     }
 
     function Decline(RID) {
-        axios.put('http://localhost:4000/requests/decline', {
+        axios.put('http://localhost:4002/requests/decline', {
 
             RID: RID
 
@@ -93,7 +95,7 @@ function RequestsRequests() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Supervisor Name </th>
+                                    <th>Supervisor Name</th>
                                     <th>Warehouse </th>
                                     <th>Product Name</th>
                                     <th>Stock</th>
@@ -112,8 +114,8 @@ function RequestsRequests() {
                                                 <td>{data.Stock}</td>
                                                 <td>{data.Quantity}</td>
                                                 <td>
-                                                    <div className="buttons"><button className="button" onClick={() => { Accept(data.RID) }}> Accept </button>
-                                                        <button className="button" id="Delete" onClick={() => { Decline(data.RID) }}> Decline </button>
+                                                    <div className="buttons"><button className="button" onClick={() => { Accept(data.ID) }}> Accept </button>
+                                                        <button className="button" id="Delete" onClick={() => { Decline(data.ID) }}> Decline </button>
                                                     </div>
                                                 </td>
                                             </tr>
