@@ -11,6 +11,10 @@ volumes:
     driver: local
   supervisormanagementservice_node_modules:
     driver: local
+  warehousemanagementservice_node_modules:
+    driver: local
+  productmanagementservice_node_modules:
+    driver: local
   Frontend_node_modules:
     driver: local
   usermysqldata:
@@ -140,6 +144,47 @@ services:
       MYSQL_USER: admin
       MYSQL_PASS: 'admin'
       MYSQL_DB_SUPERVISOR: userdb
+      MYSQL_PORT: 3306
+  
+  productmanagementservice:
+    build: ./ProductService/
+    container_name: productmanagementservice
+    ports:
+      - "4004:4000"
+    volumes:
+      - ./ProductManagementService:/app
+      
+      - productmanagementservice_node_modules:/app/node_modules
+    depends_on:
+      - productdb
+    restart: on-failure
+    networks:
+      - mysql-phpmyadmin
+    environment:
+      MYSQL_HOST_SUPERVISOR: productdb
+      MYSQL_USER: admin
+      MYSQL_PASS: 'admin'
+      MYSQL_DB_SUPERVISOR: productdb
+      MYSQL_PORT: 3306
+  
+  warehousemanagementservice:
+    build: ./WarehouseManagementService/
+    container_name: warehousemanagementservice
+    ports:
+      - "4005:4000"
+    volumes:
+      - ./WarehouserManagementService:/app
+      - warehousemanagementservice_node_modules:/app/node_modules
+    depends_on:
+      - warehousedb
+    restart: on-failure
+    networks:
+      - mysql-phpmyadmin
+    environment:
+      MYSQL_HOST_SUPERVISOR: warehousedb
+      MYSQL_USER: admin
+      MYSQL_PASS: 'admin'
+      MYSQL_DB_SUPERVISOR: warehousedb
       MYSQL_PORT: 3306
   
   
