@@ -9,6 +9,8 @@ volumes:
     driver: local
   requestmanagementservice_node_modules:
     driver: local
+  supervisormanagementservice_node_modules:
+    driver: local
   Frontend_node_modules:
     driver: local
   usermysqldata:
@@ -117,6 +119,27 @@ services:
       MYSQL_DB_WAREHOUSE: warehousedb
       MYSQL_DB_REQUEST: requestdb
       MYSQL_DB_PRODUCT : productdb
+      MYSQL_PORT: 3306
+  
+ 
+  supervisormanagementservice:
+    build: ./SupervisorManagementService/
+    container_name: supervisormanagementservice
+    ports:
+      - "4003:4000"
+    volumes:
+      - ./SupervisorManagementService:/app
+      - supervisormanagementservice_node_modules:/app/node_modules
+    depends_on:
+      - userdb
+    restart: on-failure
+    networks:
+      - mysql-phpmyadmin
+    environment:
+      MYSQL_HOST_SUPERVISOR: userdb
+      MYSQL_USER: admin
+      MYSQL_PASS: 'admin'
+      MYSQL_DB_SUPERVISOR: userdb
       MYSQL_PORT: 3306
   
   

@@ -9,7 +9,7 @@ const SuperVisorConnection = mysql.createConnection({
     host: process.env.MYSQL_HOST_SUPERVISOR|| 'localhost',
     user     : process.env.MYSQL_USER||'root',
     password : process.env.MYSQL_PASS || '',
-    database : process.env.MYSQL_DB_SUPERVISOR||'userdb',
+    database : process.env.MYSQL_DB_SUPERVISOR||'edara',
     port: process.env.MYSQL_PORT || '3306'
 })
 // ====================== Connect To SQL Server ======================
@@ -27,7 +27,7 @@ const WarehouseConnection = mysql.createConnection({
     host: process.env.MYSQL_HOST_WAREHOUSE|| 'localhost',
     user     : process.env.MYSQL_USER||'root',
     password : process.env.MYSQL_PASS || '',
-    database : process.env.MYSQL_DB_WAREHOUSE||'edararr',
+    database : process.env.MYSQL_DB_WAREHOUSE||'edara',
     port: process.env.MYSQL_PORT || '3306'
 })
 // ====================== Connect To SQL Server ======================
@@ -45,7 +45,7 @@ const ProductConnection = mysql.createConnection({
     host: process.env.MYSQL_HOST_PRODUCT|| 'localhost',
     user     : process.env.MYSQL_USER||'root',
     password : process.env.MYSQL_PASS || '',
-    database : process.env.MYSQL_DB_PRODUCT||'edararr',
+    database : process.env.MYSQL_DB_PRODUCT||'edara',
     port: process.env.MYSQL_PORT || '3306'
 })
 // ====================== Connect To SQL Server ======================

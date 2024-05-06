@@ -18,13 +18,7 @@ axios.defaults.withCredentials = true;
 
 function SupervisorsManagement() {
     const navigate = useNavigate();
-    const [data, setData] = useState({
-        Name: '',
-        Email: '',
-        Password: '',
-        Phone: '',
-        Token: ''
-    });
+
     const [addFormData, setAddFormData] = useState({
         Name: '',
         Email: '',
@@ -63,7 +57,7 @@ function SupervisorsManagement() {
     };
 
     useEffect(() => {
-        axios.get('http://localhost:4000/supervisors/')
+        axios.get('http://localhost:4003/supervisors/')
             .then(res => {
                 console.log(res.data);
                 getsuperviosrs(res.data)
@@ -97,16 +91,27 @@ function SupervisorsManagement() {
         setOpenModal(false);
         let data_encrypted = encryptData(addFormData);
         console.log(encryptData(addFormData));
-        axios.post('http://localhost:4000/supervisors/', { data: data_encrypted })
+        axios.post('http://localhost:4003/supervisors/', { data: data_encrypted })
             .then(res => {
+                setAddFormData({ Name: '',
+                Email: '',
+                Password: '',
+                Phone: ''})
                 console.log(res.data);
                 closeform();
+                showMessage(msg, svrt);
                 setreload(!reload);
             })
             .catch(err => {
-                console.log("msh sh8ala", err)
+                if(err.response.data.errors){
+                showMessage(err.response.data.errors[0].msg, 'error');
+            }
+            else {
+                showMessage(err.response.data.msg, 'error');
+
+            }
             });
-        showMessage(msg, svrt);
+        
     }
     
     function Update(Data) {
@@ -123,7 +128,7 @@ function SupervisorsManagement() {
     }
     
     function DeleteSupervisor(ID,msg,svrt) {
-        axios.delete(`http://localhost:4000/supervisors/${ID}`)
+        axios.delete(`http://localhost:4003/supervisors/${ID}`)
             .then(res => {
                 console.log(res);
                 setreload(!reload);
@@ -134,13 +139,13 @@ function SupervisorsManagement() {
     }
     function UpdateData(msg,svrt) {
         let updateData_encrypted = encryptData(updateFormData);
-        axios.put('http://localhost:4000/supervisors', {
+        axios.put('http://localhost:4003/supervisors', {
             data: updateData_encrypted,
 
         })
             .then(res => {
                 console.log(res);
-                setData({});
+                setUpdateFormData({});
                 closeupdateform();
                 setreload(!reload);
 
@@ -259,10 +264,10 @@ function SupervisorsManagement() {
 
                             </Stack>
                             <div className="form">
-                            <input placeholder="Name" type="text" value={addFormData.Name} onChange={(e) => { setAddFormData({ ...addFormData, Name: e.target.value }) }} id="name" />
-                            <input placeholder="Email" type="email" value={addFormData.Email} onChange={(e) => { setAddFormData({ ...addFormData, Email: e.target.value }) }} id="location" />
-                            <input placeholder="Password" type="password" value={addFormData.Password} onChange={(e) => { setAddFormData({ ...addFormData, Password: e.target.value }) }} id="location" />
-                            <input placeholder="Phone" type="phone" value={addFormData.Phone} onChange={(e) => { setAddFormData({ ...addFormData, Phone: e.target.value }) }} id="location" />
+                            <input placeholder="Name" type="text"  onChange={(e) => { setAddFormData({ ...addFormData, Name: e.target.value }) }} id="name" />
+                            <input placeholder="Email" type="email"  onChange={(e) => { setAddFormData({ ...addFormData, Email: e.target.value }) }} id="location" />
+                            <input placeholder="Password" type="password"  onChange={(e) => { setAddFormData({ ...addFormData, Password: e.target.value }) }} id="location" />
+                            <input placeholder="Phone" type="phone" onChange={(e) => { setAddFormData({ ...addFormData, Phone: e.target.value }) }} id="location" />
 
                                 <button className="button" onClick={() => { InsertData('supervisor added successfully!','success') }} id="create">Add</button>
                             </div></div></div></div>

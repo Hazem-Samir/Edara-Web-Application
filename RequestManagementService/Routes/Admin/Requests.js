@@ -43,14 +43,6 @@ router.get("/",adminAuthorize, (req, res) => {
                          return res.json("Error");
                      }
                      const joinedResults = performJoin(userResult,requestResult, warehouseResult,productResult);
-                     console.log(userResult)
-                     console.log(requestResult)
-
-                     console.log(warehouseResult)
-                     console.log(productResult)
-                     console.log(joinedResults)
-
-
                    res.status(200).json(joinedResults)
                   
          

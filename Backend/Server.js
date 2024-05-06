@@ -25,15 +25,16 @@ server.use(express.static('Uploads'));
 
 
 // ====================== Modules ======================
-const supervisors = require('./Routes/Admin/Supervisors');
 const warehouses = require('./Routes/Admin/Warehouses');
-const AdminrequestsHistory = require('./Routes/Admin/Requests History');
-const SupervisorrequestsHistory = require('./Routes/Supervisor/Requests History');
-const ProductRequest = require('./Routes/Supervisor/My Products');
+const supervisors = require('./Routes/Admin/Supervisors');
+const AdminrequestsHistory = require('./Routes/Admin/Reqsuests History');
+const SupervisorrequestsHistory = require('./Routes/Supesrvisor/Requests History');
+const ProductRequest = require('./Routes/Supervisor/My Psroducts');
 const products = require('./Routes/Admin/Products');
 const requests = require('./Routes/Admin/Requests');
-const Authentication = require('./Routes/Authentication/Authentication')
+const Authentication = require('./Routes/Authenticatsion/Authentication')
 const cookieParser = require('cookie-parser');
+server.use(cookieParser());
 server.use(cookieParser());
 // ====================== Routes ======================
 server.use("/Authentication", Authentication);

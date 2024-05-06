@@ -21,14 +21,14 @@ server.use(express.static('Uploads'));
 
 // ====================== Modules ======================
 
-const requests = require('./Routes/Admin/Requests');
-const AdminrequestsHistory = require('./Routes/Admin/Requests History');
+const supervisors = require('./Routes/Admin/Supervisors');
+
 
 server.use(cookieParser());
 // ====================== Routes ======================
 
-server.use("/requests-history", AdminrequestsHistory);
-server.use("/requests", requests);
+server.use("/supervisors", supervisors);
+
 
 // ====================== Start Server ======================
 server.listen(PORT, () => {
