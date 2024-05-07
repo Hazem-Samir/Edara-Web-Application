@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { adminAuthorize } = require('../Middleware/authorize');
 const { RequestConnection, SuperVisorConnection, ProductConnection, WarehouseConnection } = require('../../DB/Connection');
-const { performJoin } = require('../Utils/CustomJoin');
+const { performJoin } = require('../../Utils/CustomJoin');
 
 // ====================== Requests ======================
 router.get("/",adminAuthorize, (req, res) => {

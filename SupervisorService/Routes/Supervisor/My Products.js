@@ -36,7 +36,7 @@ router.get("/", supervisorAuthorize, (req, res) => {
                     return res.json("Error");
                 }
                 const joinedResults = performJoin(userResult,warehouseResult, productResult,[]);
-
+                console.log(joinedResults)
               res.status(200).json(joinedResults)
              
     

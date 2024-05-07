@@ -37,4 +37,4 @@ exports.performJoin = (results1, results2, results3,results4) => {
   }).filter(row => row !== null);
 
   return finalJoinedResults2;
-}; return finalJoinedResults }
+}; return flattenedJoinedResults1_2 }

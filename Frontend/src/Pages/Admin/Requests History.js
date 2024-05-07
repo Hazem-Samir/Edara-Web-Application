@@ -19,9 +19,6 @@ function RequestsHistory() {
             .catch(err => navigate("/"))
     },[])
 
-    useEffect(() => {
-        RequestStatusColor();           
-    }, [requestsHistory])
 
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
@@ -43,6 +40,10 @@ function RequestsHistory() {
     const changeCPage = (id) => {
         setCurrentPage(id)
     }
+
+    useEffect(() => {
+        RequestStatusColor();           
+    }, [currentPage,requestsHistory])
     return (
         <section>
             <div className="page-name">

@@ -113,12 +113,12 @@ services:
     networks:
       - mysql-phpmyadmin
     environment:
-      MYSQL_HOST_SUPERVISOR: userdb
       MYSQL_HOST_WAREHOUSE: warehousedb
       MYSQL_HOST_REQUEST: requestdb
       MYSQL_HOST_PRODUCT : productdb
       MYSQL_USER: admin
       MYSQL_PASS: 'admin'
+      MYSQL_HOST_SUPERVISOR: userdb
       MYSQL_DB_SUPERVISOR: userdb
       MYSQL_DB_WAREHOUSE: warehousedb
       MYSQL_DB_REQUEST: requestdb
@@ -147,7 +147,7 @@ services:
       MYSQL_PORT: 3306
   
   productmanagementservice:
-    build: ./ProductService/
+    build: ./ProductManagementService/
     container_name: productmanagementservice
     ports:
       - "4004:4000"
@@ -161,11 +161,15 @@ services:
     networks:
       - mysql-phpmyadmin
     environment:
-      MYSQL_HOST_SUPERVISOR: productdb
       MYSQL_USER: admin
       MYSQL_PASS: 'admin'
-      MYSQL_DB_SUPERVISOR: productdb
       MYSQL_PORT: 3306
+      MYSQL_DB_PRODUCT: productdb
+      MYSQL_DB_WAREHOUSE: warehousedb
+      MYSQL_HOST_PRODUCT: productdb
+      MYSQL_HOST_WAREHOUSE: warehousedb
+      MYSQL_HOST_SUPERVISOR: userdb
+      MYSQL_DB_SUPERVISOR: userdb
   
   warehousemanagementservice:
     build: ./WarehouseManagementService/
@@ -173,7 +177,7 @@ services:
     ports:
       - "4005:4000"
     volumes:
-      - ./WarehouserManagementService:/app
+      - ./WarehouseManagementService:/app
       - warehousemanagementservice_node_modules:/app/node_modules
     depends_on:
       - warehousedb
@@ -181,10 +185,12 @@ services:
     networks:
       - mysql-phpmyadmin
     environment:
-      MYSQL_HOST_SUPERVISOR: warehousedb
+      MYSQL_HOST_SUPERVISOR: userdb
+      MYSQL_HOST_WAREHOUSE: warehousedb
       MYSQL_USER: admin
       MYSQL_PASS: 'admin'
-      MYSQL_DB_SUPERVISOR: warehousedb
+      MYSQL_DB_WAREHOUSE: warehousedb
+      MYSQL_DB_SUPERVISOR: userdb
       MYSQL_PORT: 3306
   
   

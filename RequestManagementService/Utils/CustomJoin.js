@@ -28,7 +28,7 @@ exports.performJoin = (results1, results2, results3,results4) => {
   }).filter(row => row !== null);
   if(results4.length>0){
   const finalJoinedResults2 =finalJoinedResults.map(row1_2 => {
-    const matchingRow4 = results4.find(row4 => row4.CID6 === row1_2.CID5);
+    const matchingRow4 = results4.find(row4 => row4.CID5 === row1_2.CID4);
     if (matchingRow4) {
       // Merge properties from both rows into a single object
       return { ...row1_2, ...matchingRow4 };

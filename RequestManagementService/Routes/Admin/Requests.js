@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { adminAuthorize} = require('../Middleware/authorize');
 const { SuperVisorConnection, WarehouseConnection, ProductConnection, RequestConnection } = require('../../DB/Connection');
-const { performJoin } = require('../Utils/CustomJoin');
+const { performJoin } = require('../../Utils/CustomJoin');
 
 
 // ====================== Requests ======================
@@ -43,6 +43,7 @@ router.get("/",adminAuthorize, (req, res) => {
                          return res.json("Error");
                      }
                      const joinedResults = performJoin(userResult,requestResult, warehouseResult,productResult);
+                   console.log(joinedResults)
                    res.status(200).json(joinedResults)
                   
          

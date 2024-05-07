@@ -35,12 +35,12 @@ function WarehousesManagement() {
     const navigate = useNavigate();
     function AddWarehouse() {
         setOpenModal(true);
-        axios.get("http://localhost:4000/supervisors")
+        axios.get("http://localhost:4003/supervisors")
             .then(res => getsupervisors(res.data))
             .catch(console.log("fail"))
     }
     function DeleteWarehouse(WID,msg,svrt) {
-        axios.delete(`http://localhost:4000/warehouses/${WID}`)
+        axios.delete(`http://localhost:4005/warehouses/${WID}`)
             .then(res => {console.log(res)
                 // window.location.reload(false);
                 setreload(!reload);
@@ -55,7 +55,7 @@ function WarehousesManagement() {
             Name:data.Name,
             Location:data.Location
         })
-        axios.get("http://localhost:4000/supervisors")
+        axios.get("http://localhost:4003/supervisors")
             .then(res => {getsupervisors(res.data);
             })
             .catch(console.log("fail"))
@@ -69,7 +69,7 @@ function WarehousesManagement() {
         var value = select.options[select.selectedIndex].value;
         console.log(value);
         // console.log(wid);
-        axios.put('http://localhost:4000/warehouses', {
+        axios.put('http://localhost:4005/warehouses', {
                 WID: updateFormData.WID,
                 Name: updateFormData.Name,
                 Location: updateFormData.Location,
@@ -88,7 +88,7 @@ function WarehousesManagement() {
         showMessage(msg,svrt)
     }
     function DeleteAll(msg,svrt){
-        axios.delete(`http://localhost:4000/warehouses/`)
+        axios.delete(`http://localhost:4005/warehouses/`)
             .then(res => {console.log(res);
                 window.location.reload(false);
             })
@@ -96,8 +96,12 @@ function WarehousesManagement() {
         showMessage(msg,svrt)
     }
     useEffect(() => {
-        axios.get("http://localhost:4000/warehouses")
-            .then(res => getwarehouses(res.data))
+        axios.get("http://localhost:4005/warehouses")
+            .then(res => {
+                
+                getwarehouses(res.data)
+                // console.log(res.data)
+            })
             .catch(err=> navigate("/"))
 
     }, [reload])
@@ -106,7 +110,7 @@ function WarehousesManagement() {
         handleCloseModal();
         var select = document.querySelector('#createSelection');
         var value = select.options[select.selectedIndex].value;
-        axios.post("http://localhost:4000/warehouses", { warehouseName: addFormData.Name, Location: addFormData.Location, SID: value }, { withCredentials: true })
+        axios.post("http://localhost:4005/warehouses", { warehouseName: addFormData.Name, Location: addFormData.Location, SID: value }, { withCredentials: true })
             .then(res => {console.log(res);
                 // window.location.reload(false);
                 closeform();
@@ -221,6 +225,7 @@ function WarehousesManagement() {
                             <tbody>
                                 {
                                     records.map((data, i) => {
+                                        console.log(warehouses)
                                         return (
                                             <tr key={i}>
                                                 <td>{data.WHName}</td>
