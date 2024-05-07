@@ -62,14 +62,18 @@ function SupervisorsManagement() {
                 console.log(res.data);
                 getsuperviosrs(res.data)
             })
-            .catch(err => {    showMessage('The Supervisor  Management Service is currently down try again later', 'error');
+            .catch(err => {   
 
-            showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
-            if(err.response.data){
+                if(err.response){
+                showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
                 setTimeout(()=>{
                     navigate('/')
                 },500)
                
+            }
+            else {
+                showMessage('The Warehouse Management Service is currently down try again later', 'error');
+
             }
 })
 

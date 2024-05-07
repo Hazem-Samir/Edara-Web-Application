@@ -118,12 +118,16 @@ function WarehousesManagement() {
                 // console.log(res.data)
             })
             .catch(err=> {  
-                  showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
-                if(err.response.data){
+                if(err.response){
+                    showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
                     setTimeout(()=>{
                         navigate('/')
                     },500)
                    
+                }
+                else {
+                    showMessage('The Supervisor Service is currently down try again later', 'error');
+    
                 }
 
 })

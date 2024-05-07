@@ -31,13 +31,18 @@ function RequestsRequests() {
         axios.get("http://localhost:4002/requests")
             .then(res => {console.log(res.data)
                 getRequests(res.data)})
-            .catch(err => {    showMessage('The Request Service is currently down try again later', 'error');
-//    showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
-if(err.response.data){
+            .catch(err => {   
+                //    showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+                if(err.response){
+    showMessage(err.response.data||'The Request Service is currently down try again later', 'error');
     setTimeout(()=>{
         navigate('/')
     },500)
    
+}
+else {
+    showMessage('The Request Service is currently down try again later', 'error');
+
 }
 
 })

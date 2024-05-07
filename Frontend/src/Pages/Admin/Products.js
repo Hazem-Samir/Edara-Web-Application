@@ -114,13 +114,16 @@ function Products() {
     useEffect(() => {
         axios.get(`http://localhost:4004/Products/${wid}`)
             .then(res => { getproducts(res.data); })
-            .catch(err => {    showMessage('The Product Management Service is currently down try again later', 'error');
-            showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
-            if(err.response.data){
+            .catch(err => {     if(err.response){
+                showMessage(err.response.data||'The Products Management Service is currently down try again later', 'error');
                 setTimeout(()=>{
                     navigate('/')
                 },500)
                
+            }
+            else {
+                showMessage('The Products Management Service is currently down try again later', 'error');
+
             }
 
 })

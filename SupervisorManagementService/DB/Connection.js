@@ -21,7 +21,7 @@ SuperVisorConnection.connect(function (err) {
     }
 
     console.log('connected as id ' + SuperVisorConnection.threadId);
-});},14000)
+});},30000)
 
 
 

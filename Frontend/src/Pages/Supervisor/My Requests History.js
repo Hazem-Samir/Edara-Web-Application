@@ -55,13 +55,17 @@ const [open, setOpen] = useState(false);
 
             axios.get(`http://localhost:4001/my-requests-history/${Cookies.get('Token')}`)
                 .then(res => setRequestsHistory(res.data))
-                .catch(err => {    showMessage('The Supervisor Service is currently down try again later', 'error');
-                showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
-                if(err.response.data){
+                .catch(err => { 
+                if(err.response){
+                    showMessage(err.response.data||'The Supervisor  Service is currently down try again later', 'error');
                     setTimeout(()=>{
                         navigate('/')
                     },500)
                    
+                }
+                else {
+                    showMessage('The Supervisor Service is currently down try again later', 'error');
+    
                 }
 
 });

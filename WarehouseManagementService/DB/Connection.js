@@ -21,7 +21,7 @@ SuperVisorConnection.connect(function (err) {
     }
 
     console.log('connected as id ' + SuperVisorConnection.threadId);
-});},14000)
+});},30000)
 
 const WarehouseConnection = mysql.createConnection({
     host: process.env.MYSQL_HOST_WAREHOUSE|| 'localhost',
@@ -39,7 +39,7 @@ WarehouseConnection.connect(function (err) {
     }
 
     console.log('connected as id ' + WarehouseConnection.threadId);
-});},14000)
+});},30000)
 
 
 

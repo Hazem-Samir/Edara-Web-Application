@@ -66,13 +66,17 @@ const MyProducts = () => {
 
             })
 
-            .catch(err => {    showMessage('The Supervisor Service is currently down try again later', 'error');
-            showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
-            if(err.response.data){
+            .catch(err => {  
+            if(err.response){
+                showMessage(err.response.data||'The Supervisor  Service is currently down try again later', 'error');
                 setTimeout(()=>{
                     navigate('/')
                 },500)
-               
+                
+            }
+            else {
+                showMessage('The Supervisor Service is currently down try again later', 'error');
+
             }
 
 })
