@@ -4,19 +4,43 @@ import { useNavigate } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import { FaPen } from "react-icons/fa";
 import Empty from "../Empty";
-
+import Snackbar from '@mui/material/Snackbar';
+    import Alert from '@mui/material/Alert';
 axios.defaults.withCredentials = true
 
 function RequestsRequests() {
     const navigate = useNavigate();
     const [Requests, getRequests] = useState([]);
     const [reload, setreload] = useState(0);
-
+    const [open, setOpen] = useState(false);
+        const [message, setMessage] = useState('');
+        const [severity, setSeverity] = useState('success');
+        const showMessage = (message,severity) => {
+            setOpen(true);
+            setSeverity(severity);
+            setMessage(message);
+        };
+        const handleClose = (event, reason) => {
+            if (reason === 'clickaway') {
+            return;
+            }
+        
+            setOpen(false);
+        };
     useEffect(() => {
         axios.get("http://localhost:4002/requests")
             .then(res => {console.log(res.data)
                 getRequests(res.data)})
-            .catch(err => navigate("/"))
+            .catch(err => {    showMessage('The Request Service is currently down try again later', 'error');
+//    showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+if(err.response.data){
+    setTimeout(()=>{
+        navigate('/')
+    },500)
+   
+}
+
+})
 
     }, [reload])
 
@@ -30,11 +54,14 @@ function RequestsRequests() {
             .then(res => {
                 console.log(res)
                 // window.location.reload(false);
+                showMessage('The Request is Accepted','success')
                 setreload(!reload);
 
 
             })
-            .catch(err => console.log("msh sh8ala", err))
+            .catch(err => {
+                showMessage('The Request Service is currenlty down try again later!','error')
+            })
     }
 
     function Decline(RID) {
@@ -46,10 +73,14 @@ function RequestsRequests() {
             .then(res => {
                 console.log(res)
                 // window.location.reload(false);
+                showMessage('The Request is Decline','success')
+
                 setreload(!reload);
 
             })
-            .catch(err => console.log("msh sh8ala", err))
+            .catch(err => {
+                showMessage('The Request Service is currenlty down try again later!','error')
+            })
     }
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
@@ -129,6 +160,16 @@ function RequestsRequests() {
                     :
                     <Empty />
             }
+               <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert
+                onClose={handleClose}
+                severity={severity}
+                variant="filled"
+                sx={{ width: '100%' }}
+                >
+                {message}
+                </Alert>
+            </Snackbar>
         </section>
 
     );

@@ -62,7 +62,16 @@ function SupervisorsManagement() {
                 console.log(res.data);
                 getsuperviosrs(res.data)
             })
-            .catch(err => navigate("/"))
+            .catch(err => {    showMessage('The Supervisor  Management Service is currently down try again later', 'error');
+
+            showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+            if(err.response.data){
+                setTimeout(()=>{
+                    navigate('/')
+                },500)
+               
+            }
+})
 
     }, [reload])
     const handleCloseModal = () => {
@@ -103,13 +112,8 @@ function SupervisorsManagement() {
                 setreload(!reload);
             })
             .catch(err => {
-                if(err.response.data.errors){
-                showMessage(err.response.data.errors[0].msg, 'error');
-            }
-            else {
-                showMessage(err.response.data.msg, 'error');
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Supervisor Management Service is currently down try again later', 'error');
 
-            }
             });
         
     }
@@ -131,11 +135,14 @@ function SupervisorsManagement() {
         axios.delete(`http://localhost:4003/supervisors/${ID}`)
             .then(res => {
                 console.log(res);
+                showMessage(msg,svrt);
                 setreload(!reload);
                 
             })
-            .catch(err => console.log("msh sh8ala", err))
-            showMessage(msg,svrt);
+            .catch(err => {
+                showMessage('The Supervisor Management Service is currently down try again later', 'error');
+
+            })
     }
     function UpdateData(msg,svrt) {
         let updateData_encrypted = encryptData(updateFormData);
@@ -147,11 +154,14 @@ function SupervisorsManagement() {
                 console.log(res);
                 setUpdateFormData({});
                 closeupdateform();
+                showMessage(msg,svrt)
                 setreload(!reload);
 
             })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg,svrt)
+            .catch(err => {
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Supervisor Management Service is currently down try again later', 'error');
+
+            })
     }
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
@@ -218,7 +228,7 @@ function SupervisorsManagement() {
                                                 <td>{Data.Status ? "Active" : "In-Active"}</td>
                                                 <td>
                                                     <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => { Update(Data)}}>Update</button>
-                                                        <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteSupervisor(Data.ID,'supervisor deleted successfully!','error') }} >Delete</button>
+                                                        <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteSupervisor(Data.ID,'supervisor deleted successfully!','success') }} >Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>

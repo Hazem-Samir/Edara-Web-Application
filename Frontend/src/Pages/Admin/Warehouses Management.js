@@ -37,16 +37,22 @@ function WarehousesManagement() {
         setOpenModal(true);
         axios.get("http://localhost:4003/supervisors")
             .then(res => getsupervisors(res.data))
-            .catch(console.log("fail"))
+            .catch((err)=>{
+                showMessage('The Supervisor Service is currently down try again later', 'error');
+
+            })
     }
     function DeleteWarehouse(WID,msg,svrt) {
         axios.delete(`http://localhost:4005/warehouses/${WID}`)
             .then(res => {console.log(res)
                 // window.location.reload(false);
+                showMessage(msg, svrt);
                 setreload(!reload);
 })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg, svrt);
+            .catch(err => {
+                showMessage('The Warehouse Management Service is currently down try again later', 'error');
+
+            })
     }
 
     function UpdateWarehouse(data) {
@@ -58,7 +64,10 @@ function WarehousesManagement() {
         axios.get("http://localhost:4003/supervisors")
             .then(res => {getsupervisors(res.data);
             })
-            .catch(console.log("fail"))
+            .catch((err)=>{
+                showMessage('The Supervisor Service is currently down try again later', 'error');
+
+            })
         // wid = WID;
         // console.log(wid);
         updateform();
@@ -82,18 +91,24 @@ function WarehousesManagement() {
                 closeupdateform();
                 setreload(!reload);
               
+                showMessage(msg,svrt)
                 setUpdateFormData({Name:'',Location:'',WID:0})
 })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg,svrt)
+            .catch(err => {
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+
+            })
     }
     function DeleteAll(msg,svrt){
         axios.delete(`http://localhost:4005/warehouses/`)
             .then(res => {console.log(res);
+                showMessage(msg,svrt)
                 window.location.reload(false);
             })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg,svrt)
+            .catch(err => {
+                showMessage('The Warehouse Management Service is currently down try again later', 'error');
+
+            })
     }
     useEffect(() => {
         axios.get("http://localhost:4005/warehouses")
@@ -102,7 +117,16 @@ function WarehousesManagement() {
                 getwarehouses(res.data)
                 // console.log(res.data)
             })
-            .catch(err=> navigate("/"))
+            .catch(err=> {  
+                  showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+                if(err.response.data){
+                    setTimeout(()=>{
+                        navigate('/')
+                    },500)
+                   
+                }
+
+})
 
     }, [reload])
 
@@ -115,11 +139,14 @@ function WarehousesManagement() {
                 // window.location.reload(false);
                 closeform();
                 setreload(!reload);
+                showMessage(msg,svrt)
                setAddFormData({Name:'',Location:''})
 
 })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg,svrt)
+            .catch(err => {
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+
+            })
         }
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
@@ -195,7 +222,7 @@ function WarehousesManagement() {
                                 </button>
                                 {
                                     (warehouses.length>0) &&
-                                    <button className="button" onClick={() => { DeleteAll('all warehouses deleted successfully!', 'error') }} id="delall">
+                                    <button className="button" onClick={() => { DeleteAll('all warehouses deleted successfully!', 'success') }} id="delall">
                                         <Stack direction='row' spacing={1}>
                                             {/* <p><RiDeleteBin6Line/></p> */}
                                             <p>delete all</p>
@@ -234,7 +261,7 @@ function WarehousesManagement() {
                                                 <td>{data.Name}</td>
                                                 <td><div className="buttons"><Link to={`/A/Warehouse/${data.ID}/products`} className='Productbutton'><i  aria-hidden="true"></i>Products</Link></div></td>
                                                 <td>   <div className="buttons"><button className="button" style={{ margin: 10 + 'px' }} onClick={() => {  UpdateWarehouse(data) }}>Update</button>
-                                                    <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID,'warehouse deleted successfully!','error') }} >Delete</button>
+                                                    <button className="button" style={{ margin: 10 + 'px' }} onClick={() => { DeleteWarehouse(data.ID,'warehouse deleted successfully!','success') }} >Delete</button>
                                                 </div>
                                                 </td>
                                             </tr>

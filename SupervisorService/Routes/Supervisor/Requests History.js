@@ -6,6 +6,7 @@ const { SuperVisorConnection, RequestConnection, ProductConnection } = require('
 const { performJoin } = require('../../Utils/CustomJoin');
 
 // ====================== Requests ======================
+
 router.get("/:Token", supervisorAuthorize, (req, res) => {
     // const query2 = `SELECT requests.ID,requests.SID,requests.PID,requests.Quantity,requests.State, products.Name, products.Description, products.Photo, products.Stock FROM 'requests' JOIN  products ON requests.PID= products.ID WHERE requests.SID=" + result[0].ID + ";`
 try{

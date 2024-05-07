@@ -41,10 +41,13 @@ const MyProducts = () => {
                     console.log(res)
                     // window.location.reload(false);
                     setreload(!reload);
+                    showMessage(msg,svrt)
     
                 })
-                .catch(err => showMessage('This Service is currently have problem try again later','error'))
-            showMessage(msg,svrt)
+                .catch(err => {
+                    showMessage('The Supervisor  Services is currently down try again later', 'error');
+
+                })
         }
         else {
             showMessage('Set What Quantity Needed','error')
@@ -63,7 +66,16 @@ const MyProducts = () => {
 
             })
 
-            .catch(err => navigate("/"))
+            .catch(err => {    showMessage('The Supervisor Service is currently down try again later', 'error');
+            showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+            if(err.response.data){
+                setTimeout(()=>{
+                    navigate('/')
+                },500)
+               
+            }
+
+})
     };
 
     useEffect(() => {

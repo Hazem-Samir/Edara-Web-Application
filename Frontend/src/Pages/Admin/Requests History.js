@@ -7,7 +7,8 @@ import { IoIosArrowForward } from "react-icons/io";
 import Stack from '@mui/material/Stack';
 import { FaPen } from "react-icons/fa";
 import Empty from "../Empty";
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 function RequestsHistory() {
     const navigate = useNavigate();
     const [requestsHistory, getrequestsHistory] = useState([])
@@ -16,10 +17,28 @@ function RequestsHistory() {
         axios.get('http://localhost:4002/requests-history/', { withCredentials: true})
             .then(res => {getrequestsHistory(res.data);
             })
-            .catch(err => navigate("/"))
+            .catch(err => {    showMessage('The Supervisor  Management Service is currently down try again later', 'error');
+
+
+})
     },[])
 
 
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+  const showMessage = (message,severity) => {
+        setOpen(true);
+        setSeverity(severity);
+        setMessage(message);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+    
+        setOpen(false);
+    };
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
@@ -116,6 +135,16 @@ function RequestsHistory() {
                     :
                     <Empty />
             }
+             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert
+                    onClose={handleClose}
+                    severity={severity}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    >
+                    {message}
+                    </Alert>
+                </Snackbar>
         </section>
         
 

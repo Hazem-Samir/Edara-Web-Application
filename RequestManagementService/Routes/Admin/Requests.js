@@ -8,6 +8,7 @@ const { performJoin } = require('../../Utils/CustomJoin');
 
 
 // ====================== Requests ======================
+
 router.get("/",adminAuthorize, (req, res) => {
     console.log(req.user)
    

@@ -34,11 +34,14 @@ function Products() {
             .then(res => {
                 // incorrect(res.data);
                 setreload(!reload);
-
+                showMessage(msg,svrt)
                 // window.location.reload(false);
             })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg,svrt)
+            .catch(err => {
+                
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Product Management Service is currently down try again later', 'error');
+
+            })
     }
 
     function change(e) {
@@ -88,7 +91,7 @@ function Products() {
                 setreload(!reload);
             })
             .catch(err => {
-                console.log(err)
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Product Management Service is currently down try again later', 'error');
                 // showMessage(err.response.data.errors[0].msg, 'error');
             })
     }
@@ -99,16 +102,28 @@ function Products() {
             .then(res => {
                 console.log(res);
                 setreload(!reload);
+                showMessage(msg,svrt)
 
                 // window.location.reload(false);
             })
-            .catch(err => console.log("msh sh8ala", err))
-        showMessage(msg,svrt)
+            .catch(err => {
+                showMessage('The Product Management Service is currently down try again later', 'error');
+
+            })
     }
     useEffect(() => {
         axios.get(`http://localhost:4004/Products/${wid}`)
             .then(res => { getproducts(res.data); })
-            .catch(err => navigate("/"))
+            .catch(err => {    showMessage('The Product Management Service is currently down try again later', 'error');
+            showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+            if(err.response.data){
+                setTimeout(()=>{
+                    navigate('/')
+                },500)
+               
+            }
+
+})
     }, [reload])
 
     function InsertData(msg,svrt) {
@@ -145,7 +160,8 @@ function Products() {
             })
             .catch(err => {
                 console.log(err)
-                showMessage(err.response.data.errors[0].msg, 'error');
+                showMessage(err.response.data.errors[0].msg||err.response.data||'The Product Management Service is currently down try again later', 'error');
+
             }) }
     }
     const [currentPage, setCurrentPage] = useState(1);

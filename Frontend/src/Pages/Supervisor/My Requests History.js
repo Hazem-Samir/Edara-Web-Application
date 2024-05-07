@@ -10,6 +10,7 @@ import Alert from '@mui/material/Alert';
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import Empty from '../Empty';
+
 function MyRequestsHistory() {
     const navigate = useNavigate();
     const [requests_history, setRequestsHistory] = useState([])
@@ -20,6 +21,22 @@ function MyRequestsHistory() {
     const records = requests_history.slice(firstIndex, lastIndex)
     const nPage = Math.ceil(requests_history.length / recordsPerPage)
     const numbers = [...Array(nPage + 1).keys()].slice(1)
+
+const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+  const showMessage = (message,severity) => {
+        setOpen(true);
+        setSeverity(severity);
+        setMessage(message);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+    
+        setOpen(false);
+    };
     const prePage = () => {
         if (currentPage !== firstIndex) {
         setCurrentPage(currentPage - 1)
@@ -38,13 +55,22 @@ function MyRequestsHistory() {
 
             axios.get(`http://localhost:4001/my-requests-history/${Cookies.get('Token')}`)
                 .then(res => setRequestsHistory(res.data))
-                .catch(err => navigate("/"));
+                .catch(err => {    showMessage('The Supervisor Service is currently down try again later', 'error');
+                showMessage(err.response.data||'The Warehouse Management Service is currently down try again later', 'error');
+                if(err.response.data){
+                    setTimeout(()=>{
+                        navigate('/')
+                    },500)
+                   
+                }
+
+});
         }, [])
     useEffect(
         () => {
 
             RequestStatusColor();
-        }, [requests_history])
+        }, [requests_history,currentPage])
 
     return (
         <>
@@ -60,22 +86,7 @@ function MyRequestsHistory() {
                                     <div className='count'>{requests_history.length} requests</div>
                                 </Stack>
                             </div>
-                            {/* <Stack direction='row' spacing={2} className="add">
-                                <button className="button" onClick={() => { AddWarehouse() }} >
-                                    <Stack direction='row' spacing={1}>
-                                        <p><FaPlus/></p>
-                                        <p>add</p>
-                                    </Stack>
-                                </button>
-                                {
-                                    (warehouses.length>0) &&
-                                    <button className="button" onClick={() => { DeleteAll('all warehouses deleted successfully!', 'error') }} id="delall">
-                                        <Stack direction='row' spacing={1}>
-                                            <p>delete all</p>
-                                        </Stack>
-                                    </button>
-                                }
-                            </Stack> */}
+                            
                         </Stack>
                     </div>
                 </Stack>
@@ -140,7 +151,18 @@ function MyRequestsHistory() {
                     </div>
                     :
                     <Empty/>
+                    
                 }
+                  <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert
+                    onClose={handleClose}
+                    severity={severity}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    >
+                    {message}
+                    </Alert>
+                </Snackbar>
             </section >
 
         </>
