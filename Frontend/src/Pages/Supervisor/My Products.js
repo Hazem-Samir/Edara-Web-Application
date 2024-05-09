@@ -158,7 +158,7 @@ const MyProducts = () => {
                                 </thead>
                                 <tbody>
                                     {records.map((item, index) => {
-                                        let photo_url = `http://localhost:4001/${item.Photo}`;
+                                        let photo_url = `http://localhost:4004/${item.Photo}`;
                                         return (
                                             <tr key={item.PID}>
                                                 <td>{item.WName}</td>

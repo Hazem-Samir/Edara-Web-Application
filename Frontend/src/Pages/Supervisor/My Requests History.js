@@ -112,7 +112,7 @@ const [open, setOpen] = useState(false);
     
                             {
                                 records.map((data, i) => {
-                                    let photo_url = `http://localhost:4001/${data.Photo}`;
+                                    let photo_url = `http://localhost:4004/${data.Photo}`;
     
                                     return (
                                         <tr key={i}>

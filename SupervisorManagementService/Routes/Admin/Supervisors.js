@@ -36,7 +36,7 @@ router.post("/", adminAuthorize,handleData,
             const query = util.promisify(SuperVisorConnection.query).bind(SuperVisorConnection);
             const checkEmailExists = await query("select * from user where Email ='" + req.body.Email + "'");
             if (checkEmailExists.length > 0) {
-                res.status(400).json({msg:"Email Already Exists"});
+                res.status(400).json({data:"Email Already Exists"});
             }
 
             else {

@@ -116,7 +116,7 @@ function SupervisorsManagement() {
                 setreload(!reload);
             })
             .catch(err => {
-                showMessage(err.response.data.errors[0].msg||err.response.data||'The Supervisor Management Service is currently down try again later', 'error');
+                showMessage(err.response?.data.errors[0].msg||err.response?.data||'The Supervisor Management Service is currently down try again later', 'error');
 
             });
         
